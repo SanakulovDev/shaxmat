@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: shaxmat
+          POSTGRES_PASSWORD: shaxmat
+          POSTGRES_DB: shaxmat
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U shaxmat"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql://shaxmat:shaxmat@localhost:5432/shaxmat
+      JWT_ACCESS_SECRET: ci-only-secret-at-least-32-characters-long
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm --filter api prisma:deploy
+      - run: pnpm --filter api test:e2e
+      - run: pnpm build

@@ -1,0 +1,50 @@
+{
+  "app": {
+    "name": "Shaxmat",
+    "tagline": "Shaxmatni noldan professional darajagacha o'rganing"
+  },
+  "nav": {
+    "login": "Kirish",
+    "register": "Ro'yxatdan o'tish",
+    "logout": "Chiqish"
+  },
+  "home": {
+    "learn": {
+      "title": "O'rganish",
+      "text": "Qoidalardan boshlab strategiyagacha — interaktiv darslar va masalalar."
+    },
+    "bot": {
+      "title": "Bot bilan o'ynash",
+      "text": "10 ta daraja: yangi boshlovchidan professionalgacha."
+    },
+    "friends": {
+      "title": "Do'st bilan o'ynash",
+      "text": "Havolani yuboring va do'stingiz bilan real vaqtda o'ynang."
+    },
+    "soon": "Tez orada",
+    "guestNote": "Siz mehmon sifatida kirgansiz. Natijalaringiz saqlanishi uchun ro'yxatdan o'ting."
+  },
+  "auth": {
+    "email": "Email",
+    "password": "Parol",
+    "name": "Ism",
+    "submitLogin": "Kirish",
+    "submitRegister": "Ro'yxatdan o'tish",
+    "or": "yoki",
+    "guest": "Mehmon sifatida davom etish",
+    "noAccount": "Hisobingiz yo'qmi?",
+    "haveAccount": "Hisobingiz bormi?",
+    "passwordHint": "Kamida 8 ta belgi",
+    "errors": {
+      "invalidCredentials": "Email yoki parol noto'g'ri",
+      "emailTaken": "Bu email allaqachon ro'yxatdan o'tgan",
+      "invalidInput": "Ma'lumotlarni tekshiring",
+      "tooManyRequests": "Juda ko'p urinish. Birozdan keyin qayta urinib ko'ring",
+      "telegram": "Telegram orqali kirib bo'lmadi",
+      "unknown": "Xatolik yuz berdi. Qayta urinib ko'ring"
+    }
+  },
+  "common": {
+    "loading": "Yuklanmoqda..."
+  }
+}
