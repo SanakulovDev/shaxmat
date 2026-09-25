@@ -1,12 +1,56 @@
 @import "tailwindcss";
 
+/* Design direction: a calm study room, like a good chess book. Ivory
+   paper, board green, saffron for the next action, lapis for links and the
+   current step. The 8-pointed girih star (see StarMark) marks progress. */
 @theme {
+  --color-ink: #1f2421;
+  --color-muted: #5c5a52;
+  --color-paper: #f7f3ea;
+  --color-surface: #fffdf8;
+  --color-line: #e4ddcc;
   --color-board-dark: #1f5135;
   --color-board-light: #f5f0e1;
+  --color-square-dark: #5f7f44;
+  --color-square-light: #ebecd0;
   --color-accent: #e0a526;
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --color-lapis: #1e4f8a;
+  --font-sans: "Onest Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Lora Variable", Georgia, "Times New Roman", serif;
 }
 
-body {
-  @apply bg-stone-50 text-stone-900 antialiased;
+@layer base {
+  body {
+    @apply bg-paper text-ink antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display tracking-tight;
+  }
+}
+
+/* One focus ring for every control, shown only for keyboard focus. Dark
+   ring with a white halo, so it stays visible on light and dark surfaces. */
+:focus-visible {
+  outline: 3px solid var(--color-stone-900);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 5px #fff;
+}
+
+/* Regions focused from code (tabIndex -1) are not controls: no ring. */
+[tabindex='-1']:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

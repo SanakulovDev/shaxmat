@@ -7,13 +7,15 @@
     "node": ">=24"
   },
   "scripts": {
-    "dev": "pnpm --parallel --filter api --filter web dev",
+    "dev": "pnpm --parallel --filter @shaxmat/chess-core --filter @shaxmat/content --filter api --filter web dev",
     "build": "pnpm -r build",
     "lint": "pnpm -r lint",
     "typecheck": "pnpm -r typecheck",
     "test": "pnpm -r test",
     "db:up": "docker compose up -d postgres redis",
     "db:down": "docker compose down",
-    "db:migrate": "pnpm --filter api prisma:migrate"
+    "db:migrate": "pnpm --filter api prisma:migrate",
+    "postinstall": "pnpm --filter @shaxmat/chess-core --filter @shaxmat/content build",
+    "content:audio": "pnpm --filter @shaxmat/content audio"
   }
 }

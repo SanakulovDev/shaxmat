@@ -1,6 +1,13 @@
 import { useTranslation } from 'react-i18next'
-import { Link, Outlet } from 'react-router'
+import { Link, NavLink, Outlet } from 'react-router'
 import { useAuth } from '../auth/store'
+import { LanguageSwitcher } from './LanguageSwitcher'
+
+const SECTIONS = [
+  { to: '/learn', key: 'nav.learn' },
+  { to: '/bot', key: 'nav.bot' },
+  { to: '/puzzles', key: 'nav.puzzles' },
+] as const
 
 export function Layout() {
   const { t } = useTranslation()
@@ -8,29 +15,61 @@ export function Layout() {
 
   return (
     <div className="min-h-screen">
-      <header className="border-b border-stone-200 bg-white">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-surface focus:px-4 focus:py-2 focus:font-medium focus:shadow"
+      >
+        {t('nav.skipToContent')}
+      </a>
+      <header className="border-b border-line bg-surface">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-2 px-4 py-3">
           <Link to="/" className="flex items-center gap-2 text-lg font-bold">
             <img src="/favicon.svg" alt="" className="h-7 w-7" />
             {t('app.name')}
           </Link>
-          <nav className="flex items-center gap-3 text-sm">
+          <nav
+            aria-label={t('nav.main')}
+            className="order-last flex w-full gap-1 text-sm sm:order-none sm:w-auto"
+          >
+            {SECTIONS.map(({ to, key }) => (
+              <NavLink
+                key={to}
+                to={to}
+                className={({ isActive }) =>
+                  `rounded-md px-3 py-1.5 font-medium ${
+                    isActive
+                      ? 'bg-paper text-ink'
+                      : 'text-muted hover:bg-paper'
+                  }`
+                }
+              >
+                {t(key)}
+              </NavLink>
+            ))}
+          </nav>
+          <div className="ml-auto flex items-center gap-2 text-sm">
+            <LanguageSwitcher />
+            {user && (
+              <Link
+                to="/profile"
+                className="rounded-md px-3 py-1.5 font-medium hover:bg-paper"
+              >
+                {user.isGuest ? t('nav.guest') : user.name}
+              </Link>
+            )}
             {user && !user.isGuest ? (
-              <>
-                <span className="font-medium">{user.name}</span>
-                <button
-                  type="button"
-                  onClick={() => void logout()}
-                  className="rounded-md px-3 py-1.5 text-stone-600 hover:bg-stone-100"
-                >
-                  {t('nav.logout')}
-                </button>
-              </>
+              <button
+                type="button"
+                onClick={() => void logout()}
+                className="rounded-md px-3 py-1.5 text-muted hover:bg-paper"
+              >
+                {t('nav.logout')}
+              </button>
             ) : (
               <>
                 <Link
                   to="/login"
-                  className="rounded-md px-3 py-1.5 text-stone-600 hover:bg-stone-100"
+                  className="rounded-md px-3 py-1.5 text-muted hover:bg-paper"
                 >
                   {t('nav.login')}
                 </Link>
@@ -42,7 +81,7 @@ export function Layout() {
                 </Link>
               </>
             )}
-          </nav>
+          </div>
         </div>
       </header>
       {user?.isGuest && (
@@ -50,7 +89,11 @@ export function Layout() {
           {t('home.guestNote')}
         </p>
       )}
-      <main className="mx-auto max-w-5xl px-4 py-8">
+      <main
+        id="main"
+        tabIndex={-1}
+        className="mx-auto max-w-6xl px-4 py-8 outline-none"
+      >
         <Outlet />
       </main>
     </div>

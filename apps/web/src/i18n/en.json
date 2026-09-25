@@ -1,0 +1,270 @@
+{
+  "app": {
+    "name": "Shaxmat",
+    "tagline": "Learn chess from zero to professional level"
+  },
+  "nav": {
+    "login": "Log in",
+    "register": "Sign up",
+    "logout": "Log out",
+    "bot": "Play a bot",
+    "puzzles": "Puzzles",
+    "learn": "Learn",
+    "skipToContent": "Skip to content",
+    "main": "Main menu",
+    "guest": "Guest"
+  },
+  "home": {
+    "friends": {
+      "title": "Play a friend"
+    },
+    "soon": "Coming soon",
+    "guestNote": "You are playing as a guest. Sign up to keep your progress.",
+    "welcome": "Welcome!",
+    "greeting": "Hi, {{name}}!",
+    "nextLesson": "Stage {{stage}} · lesson {{lesson}}",
+    "startFirst": "Start the first lesson",
+    "allDone": "All lessons done! Keep practising with puzzles and bots.",
+    "practice": "Practice",
+    "puzzlesDetail": "Tactics puzzles from real games",
+    "puzzleRating": "Your rating: {{rating}}",
+    "nextBot": "Next opponent: {{name}}, level {{level}}",
+    "path": "Learning path",
+    "courseProgress": "Course progress"
+  },
+  "auth": {
+    "email": "Email",
+    "password": "Password",
+    "name": "Name",
+    "submitLogin": "Log in",
+    "submitRegister": "Sign up",
+    "or": "or",
+    "guest": "Continue as a guest",
+    "noAccount": "No account yet?",
+    "haveAccount": "Already have an account?",
+    "passwordHint": "At least 8 characters",
+    "errors": {
+      "invalidCredentials": "Wrong email or password",
+      "emailTaken": "This email is already registered",
+      "invalidInput": "Please check your details",
+      "tooManyRequests": "Too many attempts. Please try again later",
+      "telegram": "Could not log in with Telegram",
+      "unknown": "Something went wrong. Please try again"
+    }
+  },
+  "common": {
+    "loading": "Loading..."
+  },
+  "bot": {
+    "chooseOpponent": "Choose your opponent",
+    "level": "Level {{level}}",
+    "color": "Colour",
+    "colors": {
+      "white": "White",
+      "black": "Black",
+      "random": "Random"
+    },
+    "play": "Play",
+    "you": "You",
+    "thinking": "thinking...",
+    "yourMove": "Your move",
+    "botMove": "Bot is thinking",
+    "takeback": "Take back",
+    "hint": "Hint",
+    "resign": "Resign",
+    "again": "Play again",
+    "changeOpponent": "Change opponent",
+    "outcome": {
+      "won": "You won!",
+      "lost": "The bot won",
+      "draw": "Draw"
+    },
+    "reason": {
+      "checkmate": "checkmate",
+      "stalemate": "stalemate",
+      "threefold": "threefold repetition",
+      "insufficient": "not enough material to mate",
+      "fiftyMoves": "50-move rule",
+      "resign": "resignation"
+    },
+    "levels": {
+      "1": {
+        "name": "Jasur",
+        "title": "Newcomer"
+      },
+      "2": {
+        "name": "Malika",
+        "title": "Amateur"
+      },
+      "3": {
+        "name": "Sardor",
+        "title": "Learner"
+      },
+      "4": {
+        "name": "Dilnoza",
+        "title": "School player"
+      },
+      "5": {
+        "name": "Bekzod",
+        "title": "Club player"
+      },
+      "6": {
+        "name": "Nodira",
+        "title": "Experienced"
+      },
+      "7": {
+        "name": "Rustam",
+        "title": "Rated player"
+      },
+      "8": {
+        "name": "Gulnora",
+        "title": "Candidate master"
+      },
+      "9": {
+        "name": "Ulug'bek",
+        "title": "Master"
+      },
+      "10": {
+        "name": "Temur",
+        "title": "Professional"
+      }
+    },
+    "moves": "Moves"
+  },
+  "puzzles": {
+    "title": "Tactics puzzles",
+    "rating": "Your rating",
+    "puzzleRating": "Puzzle rating: {{rating}}",
+    "allThemes": "All",
+    "next": "Next puzzle",
+    "showSolution": "Show solution",
+    "noneLeft": "No new puzzles left in this theme. Pick another one.",
+    "status": {
+      "intro": "Opponent is moving...",
+      "whiteToMove": "White to move — find the best move",
+      "blackToMove": "Black to move — find the best move",
+      "wrong": "Not quite. Try again",
+      "solved": "Correct! Puzzle solved",
+      "revealed": "Here is the solution"
+    },
+    "themes": {
+      "mateIn1": "Mate in 1",
+      "mateIn2": "Mate in 2",
+      "mateIn3": "Mate in 3",
+      "fork": "Fork",
+      "pin": "Pin",
+      "skewer": "Skewer",
+      "hangingPiece": "Hanging piece",
+      "discoveredAttack": "Discovered attack",
+      "doubleCheck": "Double check",
+      "backRankMate": "Back-rank mate",
+      "sacrifice": "Sacrifice",
+      "deflection": "Deflection",
+      "attraction": "Attraction",
+      "promotion": "Promotion",
+      "endgame": "Endgame",
+      "middlegame": "Middlegame",
+      "opening": "Opening"
+    }
+  },
+  "learn": {
+    "title": "Learn chess",
+    "overall": "{{done}} of {{total}} lessons completed ({{percent}}%)",
+    "start": "Start",
+    "resume": "Continue",
+    "stage": "Stage {{number}}",
+    "rating": "rating {{range}}",
+    "stageSoon": "Lessons for this stage are coming soon. Meanwhile, practise with bots and puzzles.",
+    "completed": "Completed",
+    "exam": {
+      "title": "Stage exam",
+      "bot": "Beat the level {{level}} bot",
+      "puzzlesSolved": "Solve {{count}} puzzles ({{done}} solved)",
+      "puzzleRating": "Reach a puzzle rating of {{rating}} (now: {{current}})",
+      "done": "done",
+      "notDone": "not done yet",
+      "passed": "passed"
+    },
+    "back": "Back",
+    "continue": "Continue",
+    "finish": "Finish lesson",
+    "backToLessons": "Lessons",
+    "lessonDone": "Lesson complete!",
+    "nextLesson": "Next lesson",
+    "correct": "Correct!",
+    "tryAgain": "Not quite. Try again.",
+    "wrongMove": "That's not the move. Try again.",
+    "showHint": "Show a hint",
+    "starsLeft": "{{count}} of {{total}} stars left",
+    "moves_one": "{{count}} move",
+    "moves_other": "{{count}} moves",
+    "starsDone": "Well done! All stars collected.",
+    "movesUsed_one": "You used {{count}} move.",
+    "movesUsed_other": "You used {{count}} moves.",
+    "playWon": "Checkmate! Task complete.",
+    "playFailed": {
+      "draw": "It ended in a draw, but you needed to give mate — try again.",
+      "lost": "That didn't work this time. Try again."
+    },
+    "restart": "Start over",
+    "openPuzzles": "Open puzzles: {{theme}}",
+    "audio": {
+      "play": "Listen",
+      "stop": "Stop",
+      "autoplay": "Read aloud automatically"
+    },
+    "progress": "Lesson progress",
+    "stepLabel": "Step {{current}} of {{total}}",
+    "starSquares": "Star squares: {{squares}}",
+    "nextUp": "Up next"
+  },
+  "profile": {
+    "guest": "Guest account. Sign up to keep your progress —",
+    "puzzleRating": "Puzzle rating",
+    "puzzlesSolved": "Puzzles solved",
+    "lessons": "Lessons",
+    "bestBot": "Strongest bot beaten",
+    "stages": "Stages",
+    "stageLessons": "{{done}} of {{total}} lessons",
+    "examPassed": "exam passed",
+    "recentGames": "Recent games",
+    "friendGame": "Game with a friend",
+    "noGames": "No games yet."
+  },
+  "board": {
+    "label": "Chessboard",
+    "typeMove": "Type a move:",
+    "typeMoveHint": "e.g. e4, Nf3, O-O or e2e4",
+    "submitMove": "Move",
+    "promotionTitle": "Promote to which piece?",
+    "pieces": {
+      "q": "Queen",
+      "r": "Rook",
+      "b": "Bishop",
+      "n": "Knight"
+    },
+    "illegal": "No such move. Type a legal move.",
+    "notYourTurn": "You can't move now: it is the opponent's turn or the task is done.",
+    "announce": "{{side}} {{piece}} {{from}} to {{to}}.",
+    "sides": {
+      "w": "White",
+      "b": "Black"
+    },
+    "pieceNames": {
+      "k": "king",
+      "q": "queen",
+      "r": "rook",
+      "b": "bishop",
+      "n": "knight",
+      "p": "pawn"
+    },
+    "check": "Check!",
+    "mate": "Checkmate!"
+  },
+  "language": {
+    "label": "Language",
+    "uz": "O'zbekcha",
+    "ru": "Русский",
+    "en": "English"
+  }
+}

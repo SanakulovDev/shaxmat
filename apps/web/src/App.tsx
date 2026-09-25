@@ -15,7 +15,7 @@ export function App() {
 
   if (status === 'loading') {
     return (
-      <p className="p-8 text-center text-stone-500">{t('common.loading')}</p>
+      <p className="p-8 text-center text-muted">{t('common.loading')}</p>
     )
   }
   return <RouterProvider router={router} />

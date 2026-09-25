@@ -1,4 +1,4 @@
-import { type FormEvent, useCallback, useState } from 'react'
+import { type FormEvent, useCallback, useId, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, Navigate, useNavigate } from 'react-router'
 import { authErrorKey } from '../auth/errors'
@@ -8,7 +8,7 @@ import { TelegramLoginButton } from '../components/TelegramLoginButton'
 type Mode = 'login' | 'register'
 
 const inputClass =
-  'mt-1 block w-full rounded-lg border border-stone-300 px-3 py-2 focus:border-board-dark focus:outline-none focus:ring-2 focus:ring-board-dark/20'
+  'mt-1 block w-full rounded-lg border border-line px-3 py-2 focus:border-board-dark focus:outline-none focus:ring-2 focus:ring-board-dark/20'
 
 export function AuthPage({ mode }: { mode: Mode }) {
   const { t } = useTranslation()
@@ -17,6 +17,8 @@ export function AuthPage({ mode }: { mode: Mode }) {
     useAuth()
   const [error, setError] = useState<string | null>(null)
   const [pending, setPending] = useState(false)
+  const errorId = useId()
+  const hintId = useId()
 
   const run = useCallback(
     async (action: () => Promise<void>, errorKey?: string) => {
@@ -57,7 +59,7 @@ export function AuthPage({ mode }: { mode: Mode }) {
   const isLogin = mode === 'login'
 
   return (
-    <div className="mx-auto max-w-sm rounded-2xl border border-stone-200 bg-white p-6">
+    <div className="mx-auto max-w-sm rounded-2xl border border-line bg-surface p-6">
       <h1 className="text-2xl font-bold">
         {t(isLogin ? 'nav.login' : 'nav.register')}
       </h1>
@@ -83,6 +85,8 @@ export function AuthPage({ mode }: { mode: Mode }) {
             type="email"
             required
             autoComplete="email"
+            aria-invalid={error !== null}
+            aria-describedby={error ? errorId : undefined}
             className={inputClass}
           />
         </label>
@@ -95,17 +99,23 @@ export function AuthPage({ mode }: { mode: Mode }) {
             minLength={isLogin ? 1 : 8}
             maxLength={128}
             autoComplete={isLogin ? 'current-password' : 'new-password'}
+            aria-invalid={error !== null}
+            aria-describedby={
+              [isLogin ? null : hintId, error ? errorId : null]
+                .filter(Boolean)
+                .join(' ') || undefined
+            }
             className={inputClass}
           />
-          {!isLogin && (
-            <span className="mt-1 block text-xs font-normal text-stone-500">
-              {t('auth.passwordHint')}
-            </span>
-          )}
         </label>
+        {!isLogin && (
+          <p id={hintId} className="-mt-3 text-xs text-muted">
+            {t('auth.passwordHint')}
+          </p>
+        )}
 
         {error && (
-          <p role="alert" className="text-sm text-red-600">
+          <p id={errorId} role="alert" className="text-sm text-red-700">
             {t(error)}
           </p>
         )}
@@ -119,10 +129,10 @@ export function AuthPage({ mode }: { mode: Mode }) {
         </button>
       </form>
 
-      <div className="my-5 flex items-center gap-3 text-xs text-stone-400">
-        <span className="h-px flex-1 bg-stone-200" />
+      <div className="my-5 flex items-center gap-3 text-xs text-muted">
+        <span className="h-px flex-1 bg-line" />
         {t('auth.or')}
-        <span className="h-px flex-1 bg-stone-200" />
+        <span className="h-px flex-1 bg-line" />
       </div>
 
       <div className="space-y-3">
@@ -132,14 +142,14 @@ export function AuthPage({ mode }: { mode: Mode }) {
             type="button"
             disabled={pending}
             onClick={() => void run(continueAsGuest)}
-            className="w-full rounded-lg border border-stone-300 py-2.5 text-sm font-medium hover:bg-stone-50 disabled:opacity-50"
+            className="w-full rounded-lg border border-line py-2.5 text-sm font-medium hover:bg-paper disabled:opacity-50"
           >
             {t('auth.guest')}
           </button>
         )}
       </div>
 
-      <p className="mt-6 text-center text-sm text-stone-600">
+      <p className="mt-6 text-center text-sm text-muted">
         {t(isLogin ? 'auth.noAccount' : 'auth.haveAccount')}{' '}
         <Link
           to={isLogin ? '/register' : '/login'}

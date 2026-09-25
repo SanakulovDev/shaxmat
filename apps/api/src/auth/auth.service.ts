@@ -50,12 +50,14 @@ export class AuthService {
     private readonly config: ConfigService<Env, true>,
   ) {}
 
-  async register(dto: RegisterDto): Promise<AuthResult> {
+  // A guest who registers keeps their account and progress.
+  async register(dto: RegisterDto, guestId?: string): Promise<AuthResult> {
     const passwordHash = await hashPassword(dto.password);
+    const data = { email: dto.email, passwordHash, name: dto.name };
     try {
-      const user = await this.prisma.user.create({
-        data: { email: dto.email, passwordHash, name: dto.name },
-      });
+      const user =
+        (guestId && (await this.upgradeGuest(guestId, data))) ||
+        (await this.prisma.user.create({ data }));
       return await this.issueTokens(user);
     } catch (error) {
       if (
@@ -82,7 +84,12 @@ export class AuthService {
     return this.issueTokens(user);
   }
 
-  async loginWithTelegram(dto: TelegramAuthDto): Promise<AuthResult> {
+  // A known Telegram account logs in as itself. A new one becomes the
+  // current guest account, if there is one, so the guest keeps their progress.
+  async loginWithTelegram(
+    dto: TelegramAuthDto,
+    guestId?: string,
+  ): Promise<AuthResult> {
     const botToken = this.config.get('TELEGRAM_BOT_TOKEN', { infer: true });
     if (!botToken) {
       throw new ServiceUnavailableException('Telegram login is not configured');
@@ -93,11 +100,22 @@ export class AuthService {
 
     const telegramId = BigInt(dto.id);
     const name = [dto.first_name, dto.last_name].filter(Boolean).join(' ');
-    const user = await this.prisma.user.upsert({
+    const profile = { name, avatarUrl: dto.photo_url };
+    const existing = await this.prisma.user.findUnique({
       where: { telegramId },
-      create: { telegramId, name, avatarUrl: dto.photo_url },
-      update: { name, avatarUrl: dto.photo_url },
     });
+    if (existing) {
+      const user = await this.prisma.user.update({
+        where: { id: existing.id },
+        data: profile,
+      });
+      return this.issueTokens(user);
+    }
+
+    const data = { ...profile, telegramId };
+    const user =
+      (guestId && (await this.upgradeGuest(guestId, data))) ||
+      (await this.prisma.user.create({ data }));
     return this.issueTokens(user);
   }
 
@@ -147,6 +165,20 @@ export class AuthService {
     const user = await this.prisma.user.findUnique({ where: { id: userId } });
     if (!user) throw new UnauthorizedException();
     return toPublicUser(user);
+  }
+
+  // Turns a guest into a full account. Returns null when the user is gone or
+  // is no longer a guest (for example, upgraded in another tab).
+  private async upgradeGuest(
+    guestId: string,
+    data: Prisma.UserUpdateManyMutationInput,
+  ): Promise<User | null> {
+    const { count } = await this.prisma.user.updateMany({
+      where: { id: guestId, isGuest: true },
+      data: { ...data, isGuest: false },
+    });
+    if (count === 0) return null;
+    return this.prisma.user.findUnique({ where: { id: guestId } });
   }
 
   private async issueTokens(user: User): Promise<AuthResult> {

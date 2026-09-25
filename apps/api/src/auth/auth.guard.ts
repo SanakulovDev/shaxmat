@@ -13,23 +13,32 @@ export type AuthUser = { id: string; isGuest: boolean };
 
 type AuthedRequest = Request & { user?: AuthUser };
 
+// Reads the user from an "Authorization: Bearer <token>" header, or returns
+// null when the header is missing or the token is invalid.
+export async function readBearerUser(
+  jwt: JwtService,
+  request: Request,
+): Promise<AuthUser | null> {
+  const [scheme, token] = request.headers.authorization?.split(' ') ?? [];
+  if (scheme !== 'Bearer' || !token) return null;
+  try {
+    const payload = await jwt.verifyAsync<AccessTokenPayload>(token);
+    return { id: payload.sub, isGuest: payload.guest };
+  } catch {
+    return null;
+  }
+}
+
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
   constructor(private readonly jwt: JwtService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<AuthedRequest>();
-    const [scheme, token] = request.headers.authorization?.split(' ') ?? [];
-    if (scheme !== 'Bearer' || !token) throw new UnauthorizedException();
-
-    try {
-      const payload =
-        await this.jwt.verifyAsync<AccessTokenPayload>(token);
-      request.user = { id: payload.sub, isGuest: payload.guest };
-      return true;
-    } catch {
-      throw new UnauthorizedException();
-    }
+    const user = await readBearerUser(this.jwt, request);
+    if (!user) throw new UnauthorizedException();
+    request.user = user;
+    return true;
   }
 }
 

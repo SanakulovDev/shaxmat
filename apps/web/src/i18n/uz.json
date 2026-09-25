@@ -6,23 +6,31 @@
   "nav": {
     "login": "Kirish",
     "register": "Ro'yxatdan o'tish",
-    "logout": "Chiqish"
+    "logout": "Chiqish",
+    "bot": "Bot bilan o'ynash",
+    "puzzles": "Masalalar",
+    "learn": "O'rganish",
+    "skipToContent": "Asosiy mazmunga o'tish",
+    "main": "Asosiy menyu",
+    "guest": "Mehmon"
   },
   "home": {
-    "learn": {
-      "title": "O'rganish",
-      "text": "Qoidalardan boshlab strategiyagacha — interaktiv darslar va masalalar."
-    },
-    "bot": {
-      "title": "Bot bilan o'ynash",
-      "text": "10 ta daraja: yangi boshlovchidan professionalgacha."
-    },
     "friends": {
-      "title": "Do'st bilan o'ynash",
-      "text": "Havolani yuboring va do'stingiz bilan real vaqtda o'ynang."
+      "title": "Do'st bilan o'ynash"
     },
     "soon": "Tez orada",
-    "guestNote": "Siz mehmon sifatida kirgansiz. Natijalaringiz saqlanishi uchun ro'yxatdan o'ting."
+    "guestNote": "Siz mehmon sifatida kirgansiz. Natijalaringiz saqlanishi uchun ro'yxatdan o'ting.",
+    "welcome": "Xush kelibsiz!",
+    "greeting": "Salom, {{name}}!",
+    "nextLesson": "{{stage}}-bosqich · {{lesson}}-dars",
+    "startFirst": "Birinchi darsni boshlash",
+    "allDone": "Barcha darslar tugatildi! Endi masalalar va botlar bilan mashq qiling.",
+    "practice": "Mashq",
+    "puzzlesDetail": "Haqiqiy partiyalardan taktik masalalar",
+    "puzzleRating": "Reytingingiz: {{rating}}",
+    "nextBot": "Keyingi raqib: {{name}}, {{level}}-daraja",
+    "path": "O'quv yo'li",
+    "courseProgress": "Kurs bo'yicha progress"
   },
   "auth": {
     "email": "Email",
@@ -46,5 +54,215 @@
   },
   "common": {
     "loading": "Yuklanmoqda..."
+  },
+  "bot": {
+    "chooseOpponent": "Raqibni tanlang",
+    "level": "{{level}}-daraja",
+    "color": "Rang",
+    "colors": {
+      "white": "Oq",
+      "black": "Qora",
+      "random": "Tasodifiy"
+    },
+    "play": "O'ynash",
+    "you": "Siz",
+    "thinking": "o'ylayapti...",
+    "yourMove": "Sizning navbatingiz",
+    "botMove": "Bot o'ylayapti",
+    "takeback": "Yurishni qaytarish",
+    "hint": "Maslahat",
+    "resign": "Taslim bo'lish",
+    "again": "Yana o'ynash",
+    "changeOpponent": "Boshqa raqib",
+    "outcome": {
+      "won": "Siz yutdingiz!",
+      "lost": "Bot yutdi",
+      "draw": "Durang"
+    },
+    "reason": {
+      "checkmate": "mat",
+      "stalemate": "pat",
+      "threefold": "uch marta takrorlanish",
+      "insufficient": "mat qilish uchun dona yetarli emas",
+      "fiftyMoves": "50 yurish qoidasi",
+      "resign": "taslim bo'lindi"
+    },
+    "levels": {
+      "1": {
+        "name": "Jasur",
+        "title": "Yangi boshlovchi"
+      },
+      "2": {
+        "name": "Malika",
+        "title": "Havaskor"
+      },
+      "3": {
+        "name": "Sardor",
+        "title": "O'rganuvchi"
+      },
+      "4": {
+        "name": "Dilnoza",
+        "title": "Maktab o'quvchisi"
+      },
+      "5": {
+        "name": "Bekzod",
+        "title": "Klub o'yinchisi"
+      },
+      "6": {
+        "name": "Nodira",
+        "title": "Tajribali"
+      },
+      "7": {
+        "name": "Rustam",
+        "title": "Razryadchi"
+      },
+      "8": {
+        "name": "Gulnora",
+        "title": "Nomzod"
+      },
+      "9": {
+        "name": "Ulug'bek",
+        "title": "Usta"
+      },
+      "10": {
+        "name": "Temur",
+        "title": "Professional"
+      }
+    },
+    "moves": "Yurishlar"
+  },
+  "puzzles": {
+    "title": "Taktik masalalar",
+    "rating": "Reytingingiz",
+    "puzzleRating": "Masala reytingi: {{rating}}",
+    "allThemes": "Hammasi",
+    "next": "Keyingi masala",
+    "showSolution": "Yechimni ko'rsatish",
+    "noneLeft": "Bu mavzuda yangi masala qolmadi. Boshqa mavzuni tanlang.",
+    "status": {
+      "intro": "Raqib yurmoqda...",
+      "whiteToMove": "Oq yuradi — eng yaxshi yurishni toping",
+      "blackToMove": "Qora yuradi — eng yaxshi yurishni toping",
+      "wrong": "Noto'g'ri. Yana urinib ko'ring",
+      "solved": "To'g'ri! Masala yechildi",
+      "revealed": "Yechim shunday edi"
+    },
+    "themes": {
+      "mateIn1": "1 yurishda mat",
+      "mateIn2": "2 yurishda mat",
+      "mateIn3": "3 yurishda mat",
+      "fork": "Vilka",
+      "pin": "Bog'lash",
+      "skewer": "Shish",
+      "hangingPiece": "Himoyasiz dona",
+      "discoveredAttack": "Ochiq hujum",
+      "doubleCheck": "Ikki tomonlama shoh",
+      "backRankMate": "Oxirgi qatorda mat",
+      "sacrifice": "Qurbonlik",
+      "deflection": "Chalg'itish",
+      "attraction": "Jalb qilish",
+      "promotion": "Piyodani aylantirish",
+      "endgame": "Endshpil",
+      "middlegame": "O'rta o'yin",
+      "opening": "Debyut"
+    }
+  },
+  "learn": {
+    "title": "Shaxmatni o'rganish",
+    "overall": "{{done}} / {{total}} dars tugatildi ({{percent}}%)",
+    "start": "Boshlash",
+    "resume": "Davom etish",
+    "stage": "{{number}}-bosqich",
+    "rating": "reyting {{range}}",
+    "stageSoon": "Bu bosqich darslari tez orada qo'shiladi. Hozircha bot bilan o'ynab va masalalar yechib mashq qiling.",
+    "completed": "Tugatilgan",
+    "exam": {
+      "title": "Bosqich imtihoni",
+      "bot": "{{level}}-darajali botni yuting",
+      "puzzlesSolved": "{{count}} ta masala yeching ({{done}} ta yechilgan)",
+      "puzzleRating": "Masala reytingi {{rating}} ga yetsin (hozir: {{current}})",
+      "done": "bajarildi",
+      "notDone": "bajarilmagan",
+      "passed": "topshirildi"
+    },
+    "back": "Orqaga",
+    "continue": "Davom etish",
+    "finish": "Darsni yakunlash",
+    "backToLessons": "Darslar",
+    "lessonDone": "Dars tugadi!",
+    "nextLesson": "Keyingi dars",
+    "correct": "To'g'ri!",
+    "tryAgain": "Noto'g'ri. Yana urinib ko'ring.",
+    "wrongMove": "Bu yurish emas. Yana urinib ko'ring.",
+    "showHint": "Maslahat ko'rsatish",
+    "starsLeft": "{{count}} / {{total}} yulduz qoldi",
+    "moves": "{{count}} yurish",
+    "starsDone": "Barakalla! Barcha yulduzlar yig'ildi.",
+    "movesUsed": "{{count}} yurish qildingiz.",
+    "playWon": "Mat! Siz vazifani bajardingiz.",
+    "playFailed": {
+      "draw": "Durang bo'ldi. Mat qilish kerak edi — qaytadan urinib ko'ring.",
+      "lost": "Bu safar bo'lmadi. Qaytadan urinib ko'ring."
+    },
+    "restart": "Qaytadan boshlash",
+    "openPuzzles": "Masalalarni ochish: {{theme}}",
+    "audio": {
+      "play": "Tinglash",
+      "stop": "To'xtatish",
+      "autoplay": "Avtomatik o'qish"
+    },
+    "progress": "Dars jarayoni",
+    "stepLabel": "{{current}}-qadam, jami {{total}}",
+    "starSquares": "Yulduzlar kataklari: {{squares}}",
+    "nextUp": "Keyingi"
+  },
+  "profile": {
+    "guest": "Mehmon hisobi. Natijalaringiz saqlanib qolishi uchun ro'yxatdan o'ting —",
+    "puzzleRating": "Masala reytingi",
+    "puzzlesSolved": "Yechilgan masalalar",
+    "lessons": "Darslar",
+    "bestBot": "Yutilgan eng kuchli bot",
+    "stages": "Bosqichlar",
+    "stageLessons": "{{done}} / {{total}} dars",
+    "examPassed": "imtihon topshirildi",
+    "recentGames": "So'nggi o'yinlar",
+    "friendGame": "Do'st bilan o'yin",
+    "noGames": "Hali o'yinlar yo'q."
+  },
+  "board": {
+    "label": "Shaxmat taxtasi",
+    "typeMove": "Yurishni yozing:",
+    "typeMoveHint": "masalan: e4, Nf3, O-O yoki e2e4",
+    "submitMove": "Yurish",
+    "promotionTitle": "Qaysi donaga aylantirasiz?",
+    "pieces": {
+      "q": "Farzin",
+      "r": "Ruh",
+      "b": "Fil",
+      "n": "Ot"
+    },
+    "illegal": "Bunday yurish yo'q. Qonuniy yurishni yozing.",
+    "notYourTurn": "Hozir yurish mumkin emas: raqib yuryapti yoki vazifa tugagan.",
+    "announce": "{{side}} {{piece}} {{from}} dan {{to}} ga yurdi.",
+    "sides": {
+      "w": "Oq",
+      "b": "Qora"
+    },
+    "pieceNames": {
+      "k": "shoh",
+      "q": "farzin",
+      "r": "ruh",
+      "b": "fil",
+      "n": "ot",
+      "p": "piyoda"
+    },
+    "check": "Shoh!",
+    "mate": "Mat!"
+  },
+  "language": {
+    "label": "Til",
+    "uz": "O'zbekcha",
+    "ru": "Русский",
+    "en": "English"
   }
 }

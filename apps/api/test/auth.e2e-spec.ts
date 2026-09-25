@@ -1,21 +1,14 @@
 import { INestApplication } from '@nestjs/common';
-import { Test } from '@nestjs/testing';
 import { randomUUID } from 'node:crypto';
 import request from 'supertest';
-import { AppModule } from '../src/app.module.js';
-import { setupApp } from '../src/setup-app.js';
+import { createGuest, createTestApp } from './helpers.js';
 
 // Needs a migrated database: `pnpm db:up && pnpm db:migrate`.
 describe('auth (e2e)', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
-    const moduleRef = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
-    app = moduleRef.createNestApplication();
-    setupApp(app);
-    await app.init();
+    app = await createTestApp();
   });
 
   afterAll(async () => {
@@ -87,6 +80,35 @@ describe('auth (e2e)', () => {
       .expect(201);
     expect(response.body.user).toMatchObject({ isGuest: true, email: null });
     expect(response.body.user.name).toMatch(/^Mehmon-\d{4}$/);
+  });
+
+  it('turns a guest into a full account and keeps its progress', async () => {
+    const server = app.getHttpServer();
+    const guest = await createGuest(app);
+    await request(server)
+      .put('/api/progress/lessons/ruh')
+      .set('Authorization', `Bearer ${guest.accessToken}`)
+      .expect(204);
+
+    const email = `user-${randomUUID()}@example.com`;
+    const registered = await request(server)
+      .post('/api/auth/register')
+      .set('Authorization', `Bearer ${guest.accessToken}`)
+      .send({ email, password: 'secret123', name: 'Anvar' })
+      .expect(201);
+    expect(registered.body.user).toMatchObject({
+      id: guest.user.id,
+      email,
+      isGuest: false,
+    });
+
+    const progress = await request(server)
+      .get('/api/progress')
+      .set('Authorization', `Bearer ${registered.body.accessToken}`)
+      .expect(200);
+    expect(progress.body.lessons.map((l: { lessonSlug: string }) => l.lessonSlug)).toEqual([
+      'ruh',
+    ]);
   });
 
   it('rejects an invalid request body', async () => {

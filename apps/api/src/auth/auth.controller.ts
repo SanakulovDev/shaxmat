@@ -10,10 +10,16 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
 import { ThrottlerGuard } from '@nestjs/throttler';
 import type { CookieOptions, Request, Response } from 'express';
 import type { Env } from '../config/env.js';
-import { type AuthUser, CurrentUser, JwtAuthGuard } from './auth.guard.js';
+import {
+  type AuthUser,
+  CurrentUser,
+  JwtAuthGuard,
+  readBearerUser,
+} from './auth.guard.js';
 import {
   type LoginDto,
   LoginSchema,
@@ -31,15 +37,18 @@ export class AuthController {
   constructor(
     private readonly auth: AuthService,
     private readonly config: ConfigService<Env, true>,
+    private readonly jwt: JwtService,
   ) {}
 
   @Post('register')
   @UseGuards(ThrottlerGuard)
   async register(
     @Body({ schema: RegisterSchema }) dto: RegisterDto,
+    @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
   ) {
-    return this.respond(res, await this.auth.register(dto));
+    const guestId = await this.currentGuestId(req);
+    return this.respond(res, await this.auth.register(dto, guestId));
   }
 
   @Post('login')
@@ -57,9 +66,11 @@ export class AuthController {
   @UseGuards(ThrottlerGuard)
   async telegram(
     @Body({ schema: TelegramAuthSchema }) dto: TelegramAuthDto,
+    @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
   ) {
-    return this.respond(res, await this.auth.loginWithTelegram(dto));
+    const guestId = await this.currentGuestId(req);
+    return this.respond(res, await this.auth.loginWithTelegram(dto, guestId));
   }
 
   @Post('guest')
@@ -95,6 +106,11 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   me(@CurrentUser() user: AuthUser) {
     return this.auth.me(user.id);
+  }
+
+  private async currentGuestId(req: Request): Promise<string | undefined> {
+    const user = await readBearerUser(this.jwt, req);
+    return user?.isGuest ? user.id : undefined;
   }
 
   private respond(res: Response, result: AuthResult) {

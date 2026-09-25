@@ -19,6 +19,9 @@ model User {
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
   sessions     Session[]
+  ratings      Rating[]
+  puzzleTries  PuzzleAttempt[]
+  lessons      LessonProgress[]
 }
 
 // One row per refresh token. Only a SHA-256 hash of the token secret is stored.
@@ -31,4 +34,85 @@ model Session {
   createdAt  DateTime @default(now())
 
   @@index([userId])
+}
+
+enum RatingCategory {
+  puzzle
+  bullet
+  blitz
+  rapid
+  classical
+}
+
+// Glicko-2 rating per category.
+model Rating {
+  userId     String         @db.Uuid
+  user       User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category   RatingCategory
+  rating     Float
+  rd         Float
+  volatility Float
+  count      Int            @default(0)
+  updatedAt  DateTime       @updatedAt
+
+  @@id([userId, category])
+}
+
+// A finished game. In a bot game `botLevel` is set and the bot's side has
+// no user id.
+model Game {
+  id          String   @id @default(uuid(7)) @db.Uuid
+  whiteId     String?  @db.Uuid
+  blackId     String?  @db.Uuid
+  botLevel    Int?
+  // PGN result: "1-0", "0-1" or "1/2-1/2".
+  result      String
+  termination String
+  pgn         String
+  createdAt   DateTime @default(now())
+
+  @@index([whiteId, createdAt])
+  @@index([blackId, createdAt])
+}
+
+// Imported from the Lichess puzzle database (CC0).
+model Puzzle {
+  id              String          @id
+  // Position before the opponent's first move.
+  fen             String
+  // UCI moves. moves[0] is the opponent's move; the solver plays moves[1],
+  // moves[3], and so on.
+  moves           String[]
+  rating          Int
+  ratingDeviation Int
+  popularity      Int
+  plays           Int
+  themes          String[]
+  attempts        PuzzleAttempt[]
+
+  @@index([rating])
+  @@index([themes], type: Gin)
+}
+
+// Only the first try at a puzzle changes the rating.
+model PuzzleAttempt {
+  userId       String   @db.Uuid
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  puzzleId     String
+  puzzle       Puzzle   @relation(fields: [puzzleId], references: [id], onDelete: Cascade)
+  solved       Boolean
+  ratingBefore Float
+  ratingAfter  Float
+  createdAt    DateTime @default(now())
+
+  @@id([userId, puzzleId])
+}
+
+model LessonProgress {
+  userId      String   @db.Uuid
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lessonSlug  String
+  completedAt DateTime @default(now())
+
+  @@id([userId, lessonSlug])
 }

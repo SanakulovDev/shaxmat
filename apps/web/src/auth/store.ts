@@ -29,6 +29,15 @@ type AuthState = {
   logout: () => Promise<void>
 }
 
+// Features that save results (games, puzzles, lessons) need a session. An
+// anonymous visitor silently becomes a guest; registering later keeps the
+// guest's progress.
+export async function ensureSession() {
+  if (useAuth.getState().status === 'anonymous') {
+    await useAuth.getState().continueAsGuest()
+  }
+}
+
 async function authenticate(path: string, body?: unknown) {
   const session = await api<AuthResponse>(path, {
     method: 'POST',
