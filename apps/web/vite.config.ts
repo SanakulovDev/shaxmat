@@ -8,6 +8,7 @@ export default defineConfig({
   envDir: '../..',
   server: {
     proxy: {
+      '/api/socket.io': { target: 'http://localhost:3100', ws: true },
       '/api': 'http://localhost:3100',
     },
   },

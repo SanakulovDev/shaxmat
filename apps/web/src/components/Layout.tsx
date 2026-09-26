@@ -1,12 +1,15 @@
 import { useTranslation } from 'react-i18next'
 import { Link, NavLink, Outlet } from 'react-router'
 import { useAuth } from '../auth/store'
+import { IncomingChallenges } from '../features/play/IncomingChallenges'
+import { RealtimeBridge } from '../realtime/socket'
 import { LanguageSwitcher } from './LanguageSwitcher'
 
 const SECTIONS = [
   { to: '/learn', key: 'nav.learn' },
   { to: '/bot', key: 'nav.bot' },
   { to: '/puzzles', key: 'nav.puzzles' },
+  { to: '/play', key: 'nav.play' },
 ] as const
 
 export function Layout() {
@@ -15,6 +18,7 @@ export function Layout() {
 
   return (
     <div className="min-h-screen">
+      <RealtimeBridge />
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-surface focus:px-4 focus:py-2 focus:font-medium focus:shadow"
@@ -29,14 +33,14 @@ export function Layout() {
           </Link>
           <nav
             aria-label={t('nav.main')}
-            className="order-last flex w-full gap-1 text-sm sm:order-none sm:w-auto"
+            className="order-last -mx-1 flex w-full gap-1 overflow-x-auto px-1 text-sm sm:order-none sm:mx-0 sm:w-auto sm:px-0"
           >
             {SECTIONS.map(({ to, key }) => (
               <NavLink
                 key={to}
                 to={to}
                 className={({ isActive }) =>
-                  `rounded-md px-3 py-1.5 font-medium ${
+                  `whitespace-nowrap rounded-md px-3 py-1.5 font-medium ${
                     isActive
                       ? 'bg-paper text-ink'
                       : 'text-muted hover:bg-paper'
@@ -84,6 +88,7 @@ export function Layout() {
           </div>
         </div>
       </header>
+      {user && <IncomingChallenges />}
       {user?.isGuest && (
         <p className="bg-amber-50 px-4 py-2 text-center text-sm text-amber-900">
           {t('home.guestNote')}

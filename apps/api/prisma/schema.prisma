@@ -9,19 +9,25 @@ datasource db {
 }
 
 model User {
-  id           String    @id @default(uuid(7)) @db.Uuid
-  email        String?   @unique
+  id           String           @id @default(uuid(7)) @db.Uuid
+  email        String?          @unique
   passwordHash String?
-  telegramId   BigInt?   @unique
+  telegramId   BigInt?          @unique
   name         String
   avatarUrl    String?
-  isGuest      Boolean   @default(false)
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  isGuest      Boolean          @default(false)
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
   sessions     Session[]
   ratings      Rating[]
   puzzleTries  PuzzleAttempt[]
   lessons      LessonProgress[]
+  whiteGames   Game[]           @relation("WhiteGames")
+  blackGames   Game[]           @relation("BlackGames")
+  challenges   Challenge[]      @relation("ChallengeCreator")
+  invitations  Challenge[]      @relation("ChallengeDest")
+  friendsAsked Friendship[]     @relation("FriendRequester")
+  friendsOf    Friendship[]     @relation("FriendAddressee")
 }
 
 // One row per refresh token. Only a SHA-256 hash of the token secret is stored.
@@ -58,21 +64,116 @@ model Rating {
   @@id([userId, category])
 }
 
-// A finished game. In a bot game `botLevel` is set and the bot's side has
-// no user id.
+enum GameStatus {
+  active
+  finished
+  aborted
+}
+
+// A bot game is saved once it is finished: `botLevel` is set and the bot's
+// side has no user id. A game between people is created when a challenge is
+// accepted and is updated after every move until it ends.
 model Game {
-  id          String   @id @default(uuid(7)) @db.Uuid
-  whiteId     String?  @db.Uuid
-  blackId     String?  @db.Uuid
-  botLevel    Int?
-  // PGN result: "1-0", "0-1" or "1/2-1/2".
-  result      String
-  termination String
-  pgn         String
-  createdAt   DateTime @default(now())
+  id              String          @id @default(uuid(7)) @db.Uuid
+  whiteId         String?         @db.Uuid
+  white           User?           @relation("WhiteGames", fields: [whiteId], references: [id], onDelete: SetNull)
+  blackId         String?         @db.Uuid
+  black           User?           @relation("BlackGames", fields: [blackId], references: [id], onDelete: SetNull)
+  botLevel        Int?
+  status          GameStatus      @default(finished)
+  // PGN result: "1-0", "0-1" or "1/2-1/2"; "*" while the game goes on or
+  // after an abort.
+  result          String
+  // Null while the game goes on.
+  termination     String?
+  pgn             String
+  // Games between people only.
+  rated           Boolean         @default(false)
+  category        RatingCategory?
+  // Seconds.
+  timeInitial     Int?
+  timeIncrement   Int?
+  // UCI moves from the start position.
+  moves           String[]        @default([])
+  // Milliseconds left for each side as of `turnStartedAt`.
+  whiteMs         Int?
+  blackMs         Int?
+  turnStartedAt   DateTime?
+  // Side with an open offer: "w" or "b".
+  drawOffer       String?
+  takebackOffer   String?
+  // Rounded Glicko-2 ratings before a rated game, and the change after it.
+  whiteRating     Int?
+  blackRating     Int?
+  whiteRatingDiff Int?
+  blackRatingDiff Int?
+  // Bumped on every update; writes check it so two updates cannot interleave.
+  revision        Int             @default(0)
+  challenge       Challenge?
+  createdAt       DateTime        @default(now())
+  endedAt         DateTime?
 
   @@index([whiteId, createdAt])
   @@index([blackId, createdAt])
+  @@index([status])
+}
+
+enum ChallengeColor {
+  white
+  black
+  random
+}
+
+enum ChallengeStatus {
+  open
+  accepted
+  declined
+  cancelled
+}
+
+// An invitation to a game. Without `destId` anyone with the link can accept
+// it; with `destId` only that user can.
+model Challenge {
+  id            String          @id @default(uuid(7)) @db.Uuid
+  // Short code in the invite link.
+  code          String          @unique
+  creatorId     String          @db.Uuid
+  creator       User            @relation("ChallengeCreator", fields: [creatorId], references: [id], onDelete: Cascade)
+  destId        String?         @db.Uuid
+  dest          User?           @relation("ChallengeDest", fields: [destId], references: [id], onDelete: Cascade)
+  // Creator's colour.
+  color         ChallengeColor
+  rated         Boolean
+  // Seconds.
+  timeInitial   Int
+  timeIncrement Int
+  status        ChallengeStatus @default(open)
+  gameId        String?         @unique @db.Uuid
+  game          Game?           @relation(fields: [gameId], references: [id], onDelete: SetNull)
+  expiresAt     DateTime
+  createdAt     DateTime        @default(now())
+
+  @@index([creatorId, status])
+  @@index([destId, status])
+}
+
+enum FriendshipStatus {
+  pending
+  accepted
+}
+
+// One row per pair of users: the requester asked the addressee.
+model Friendship {
+  requesterId String           @db.Uuid
+  requester   User             @relation("FriendRequester", fields: [requesterId], references: [id], onDelete: Cascade)
+  addresseeId String           @db.Uuid
+  addressee   User             @relation("FriendAddressee", fields: [addresseeId], references: [id], onDelete: Cascade)
+  status      FriendshipStatus @default(pending)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@id([requesterId, addresseeId])
+  @@index([addresseeId, status])
 }
 
 // Imported from the Lichess puzzle database (CC0).

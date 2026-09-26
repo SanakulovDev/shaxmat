@@ -5,6 +5,13 @@ import { ensureSession, useAuth } from '../../auth/store'
 
 export type ProgressSummary = {
   puzzleRating: { rating: number; rd: number; count: number }
+  // Rated games between people, per category played.
+  gameRatings: {
+    category: 'bullet' | 'blitz' | 'rapid' | 'classical'
+    rating: number
+    rd: number
+    count: number
+  }[]
   puzzlesSolved: number
   lessons: { lessonSlug: string; completedAt: string }[]
   bots: { level: number; games: number; wins: number; draws: number }[]

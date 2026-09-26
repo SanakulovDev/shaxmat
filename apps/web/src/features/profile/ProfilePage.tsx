@@ -4,6 +4,7 @@ import { Link, Navigate } from 'react-router'
 import { api } from '../../api/client'
 import { useAuth } from '../../auth/store'
 import { BOT_AVATARS } from '../bot/avatars'
+import { formatDiff } from '../play/format'
 import { examStatus, useProgress } from '../learn/progress'
 import { useContent } from '../learn/useContent'
 
@@ -11,7 +12,14 @@ type RecentGame = {
   id: string
   whiteId: string | null
   blackId: string | null
+  white: { id: string; name: string } | null
+  black: { id: string; name: string } | null
   botLevel: number | null
+  rated: boolean
+  timeInitial: number | null
+  timeIncrement: number | null
+  whiteRatingDiff: number | null
+  blackRatingDiff: number | null
   result: string
   termination: string
   createdAt: string
@@ -46,6 +54,12 @@ export function ProfilePage() {
     },
     { label: t('profile.puzzlesSolved'), value: progress.data?.puzzlesSolved ?? 0 },
     { label: t('profile.lessons'), value: `${done.size} / ${allLessons.length}` },
+    ...(progress.data?.gameRatings ?? []).map((entry) => ({
+      label: t('profile.gameRating', {
+        category: t(`play.category.${entry.category}`),
+      }),
+      value: entry.rating,
+    })),
     {
       label: t('profile.bestBot'),
       value:
@@ -122,25 +136,44 @@ export function ProfilePage() {
           <ul className="divide-y divide-line rounded-xl border border-line bg-surface">
             {recent.data.map((game) => {
               const outcome = outcomeFor(game, user.id)
+              const isWhite = game.whiteId === user.id
+              const opponent = isWhite ? game.black : game.white
+              const diff = isWhite ? game.whiteRatingDiff : game.blackRatingDiff
               return (
-                <li key={game.id} className="flex items-center justify-between gap-3 px-4 py-3">
-                  <span className="flex items-center gap-2">
-                    <span aria-hidden>{game.botLevel ? BOT_AVATARS[game.botLevel] : '♟'}</span>
-                    {game.botLevel
-                      ? `${t(`bot.levels.${game.botLevel}.name`)} (${t('bot.level', { level: game.botLevel })})`
-                      : t('profile.friendGame')}
-                  </span>
-                  <span
-                    className={`text-sm font-semibold ${
-                      outcome === 'won'
-                        ? 'text-green-700'
-                        : outcome === 'lost'
-                          ? 'text-red-700'
-                          : 'text-muted'
-                    }`}
+                <li key={game.id}>
+                  <Link
+                    to={`/game/${game.id}`}
+                    className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 px-4 py-3 hover:bg-paper"
                   >
-                    {t(`bot.outcome.${outcome}`)} · {t(`bot.reason.${game.termination}`)}
-                  </span>
+                    <span className="flex min-w-0 items-center gap-2">
+                      <span aria-hidden>
+                        {game.botLevel ? BOT_AVATARS[game.botLevel] : isWhite ? '♔' : '♚'}
+                      </span>
+                      <span className="min-w-0">
+                        {game.botLevel
+                          ? `${t(`bot.levels.${game.botLevel}.name`)} (${t('bot.level', { level: game.botLevel })})`
+                          : t('profile.versus', { name: opponent?.name ?? '?' })}
+                        {game.timeInitial !== null && (
+                          <span className="ml-2 text-sm text-muted">
+                            {game.timeInitial / 60}+{game.timeIncrement ?? 0} ·{' '}
+                            {t(game.rated ? 'play.ratedShort' : 'play.casual')}
+                          </span>
+                        )}
+                      </span>
+                    </span>
+                    <span
+                      className={`text-sm font-semibold ${
+                        outcome === 'won'
+                          ? 'text-green-700'
+                          : outcome === 'lost'
+                            ? 'text-red-700'
+                            : 'text-muted'
+                      }`}
+                    >
+                      {t(`profile.outcome.${outcome}`)} · {t(`bot.reason.${game.termination}`)}
+                      {diff !== null && ` · ${formatDiff(diff)}`}
+                    </span>
+                  </Link>
                 </li>
               )
             })}

@@ -111,9 +111,10 @@ export function HomePage() {
               })}
             />
             <ActionRow
+              to="/play"
               glyph="♚"
               title={t('home.friends.title')}
-              detail={t('home.soon')}
+              detail={t('home.friends.detail')}
             />
           </ul>
         </nav>

@@ -12,11 +12,13 @@
     "learn": "O'rganish",
     "skipToContent": "Asosiy mazmunga o'tish",
     "main": "Asosiy menyu",
-    "guest": "Mehmon"
+    "guest": "Mehmon",
+    "play": "Do'stlar bilan"
   },
   "home": {
     "friends": {
-      "title": "Do'st bilan o'ynash"
+      "title": "Do'st bilan o'ynash",
+      "detail": "Havola yuboring va jonli o'ynang"
     },
     "soon": "Tez orada",
     "guestNote": "Siz mehmon sifatida kirgansiz. Natijalaringiz saqlanishi uchun ro'yxatdan o'ting.",
@@ -53,7 +55,9 @@
     }
   },
   "common": {
-    "loading": "Yuklanmoqda..."
+    "loading": "Yuklanmoqda...",
+    "copy": "Nusxa olish",
+    "copied": "Nusxa olindi"
   },
   "bot": {
     "chooseOpponent": "Raqibni tanlang",
@@ -85,7 +89,10 @@
       "threefold": "uch marta takrorlanish",
       "insufficient": "mat qilish uchun dona yetarli emas",
       "fiftyMoves": "50 yurish qoidasi",
-      "resign": "taslim bo'lindi"
+      "resign": "taslim bo'lindi",
+      "timeout": "vaqt tugadi",
+      "agreement": "kelishuv bo'yicha",
+      "aborted": "bekor qilindi"
     },
     "levels": {
       "1": {
@@ -227,7 +234,14 @@
     "examPassed": "imtihon topshirildi",
     "recentGames": "So'nggi o'yinlar",
     "friendGame": "Do'st bilan o'yin",
-    "noGames": "Hali o'yinlar yo'q."
+    "noGames": "Hali o'yinlar yo'q.",
+    "gameRating": "Reyting: {{category}}",
+    "versus": "{{name}} bilan",
+    "outcome": {
+      "won": "G'alaba",
+      "lost": "Mag'lubiyat",
+      "draw": "Durang"
+    }
   },
   "board": {
     "label": "Shaxmat taxtasi",
@@ -264,5 +278,144 @@
     "uz": "O'zbekcha",
     "ru": "Русский",
     "en": "English"
+  },
+  "play": {
+    "title": "Do'st bilan o'ynash",
+    "newGame": "Yangi o'yin",
+    "timeControl": "Vaqt nazorati",
+    "timeControlHint": "Birinchi raqam — har bir o'yinchining daqiqalari, ikkinchisi — har yurishdan keyin qo'shiladigan soniyalar.",
+    "category": {
+      "bullet": "Bullet",
+      "blitz": "Blits",
+      "rapid": "Rapid",
+      "classical": "Klassik"
+    },
+    "yourColor": "Sizning rangingiz",
+    "rated": "Reytingli o'yin",
+    "ratedHint": "Natija ikkala o'yinchining reytingiga ta'sir qiladi.",
+    "ratedGuest": "Reytingli o'yinlar ro'yxatdan o'tganlar uchun.",
+    "ratedShort": "Reytingli",
+    "casual": "O'rtoqlik",
+    "opponent": "Raqib",
+    "anyone": "Havolani olgan istalgan odam",
+    "createLink": "Taklif havolasini yaratish",
+    "inviteFriend": "Do'stni chaqirish",
+    "challenge": {
+      "waiting": "Raqib kutilmoqda",
+      "waitingFriend": "Do'stingiz javobi kutilmoqda",
+      "shareHint": "Havolani do'stingizga yuboring. U havolani ochib qabul qilishi bilan o'yin boshlanadi.",
+      "friendHint": "Do'stingizga taklif yuborildi. U qabul qilishi bilan o'yin boshlanadi.",
+      "link": "Taklif havolasi",
+      "shareTelegram": "Telegramda yuborish",
+      "shareText": "Keling, shaxmat o'ynaymiz!",
+      "cancel": "Bekor qilish",
+      "invitedBy": "{{name}} sizni o'yinga chaqirmoqda",
+      "youPlay": {
+        "white": "Siz oq donalar bilan o'ynaysiz.",
+        "black": "Siz qora donalar bilan o'ynaysiz.",
+        "random": "Ranglar tasodifiy tanlanadi."
+      },
+      "accept": "Qabul qilish",
+      "decline": "Rad etish",
+      "registerForRated": "Bu reytingli o'yin. Qabul qilish uchun ro'yxatdan o'ting.",
+      "notFound": "Taklif topilmadi.",
+      "closed": {
+        "accepted": "Bu taklif allaqachon qabul qilingan.",
+        "declined": "Taklif rad etildi.",
+        "cancelled": "Taklif bekor qilindi.",
+        "expired": "Taklif muddati tugagan."
+      },
+      "watch": "O'yinni tomosha qilish",
+      "outgoing": "Sizning takliflaringiz"
+    },
+    "incoming": {
+      "text": "{{name}} sizni o'yinga chaqirmoqda: {{summary}}"
+    },
+    "errors": {
+      "registrationRequired": "Buning uchun ro'yxatdan o'ting.",
+      "challengeClosed": "Taklif endi amal qilmaydi.",
+      "notForYou": "Bu taklif boshqa o'yinchi uchun.",
+      "notFriends": "Faqat do'stlarni to'g'ridan-to'g'ri chaqirish mumkin.",
+      "ownChallenge": "O'z taklifingizni qabul qila olmaysiz.",
+      "illegal": "Bu yurish qoidaga zid.",
+      "notYourTurn": "Hozir raqibning navbati.",
+      "network": "Aloqa uzildi. Qayta ulanmoqda...",
+      "generic": "Amal bajarilmadi. Qaytadan urinib ko'ring."
+    },
+    "friends": {
+      "title": "Do'stlar",
+      "guest": "Do'st qo'shish uchun ro'yxatdan o'ting.",
+      "requests": "Do'stlik so'rovlari",
+      "accept": "Qabul qilish",
+      "decline": "Rad etish",
+      "online": "onlayn",
+      "offline": "oflayn",
+      "challenge": "Chaqirish",
+      "challengeName": "{{name}}ni o'yinga chaqirish",
+      "remove": "O'chirish",
+      "removeName": "{{name}}ni do'stlardan o'chirish",
+      "empty": "Hali do'stlar yo'q. Quyidagi havolani yuboring yoki o'yindan keyin raqibni qo'shing.",
+      "sent": "Yuborilgan so'rovlar",
+      "cancel": "Bekor qilish",
+      "cancelName": "{{name}}ga yuborilgan so'rovni bekor qilish",
+      "inviteLink": "Sizning do'stlik havolangiz",
+      "add": {
+        "title": "Do'stlik taklifi",
+        "prompt": "{{name}} bilan do'st bo'lasizmi?",
+        "button": "Do'st qo'shish",
+        "sent": "So'rov yuborildi. {{name}} qabul qilgach, u do'stlar ro'yxatida paydo bo'ladi.",
+        "self": "Bu sizning havolangiz. Uni do'stlaringizga yuboring.",
+        "notFound": "Foydalanuvchi topilmadi."
+      }
+    },
+    "game": {
+      "notFound": "O'yin topilmadi.",
+      "moves": "Yurishlar",
+      "clockOf": "{{name}} vaqti",
+      "firstMoveCountdown": "Birinchi yurish uchun {{seconds}} soniya qoldi, aks holda o'yin bekor qilinadi.",
+      "yourMove": "Sizning navbatingiz",
+      "opponentMove": "Raqib o'ylamoqda",
+      "whiteToMove": "Oqlar yuradi",
+      "blackToMove": "Qoralar yuradi",
+      "viewingPast": "Oldingi pozitsiya ko'rsatilmoqda",
+      "aborted": "O'yin bekor qilindi",
+      "outcome": {
+        "won": "Siz yutdingiz!",
+        "lost": "Siz yutqazdingiz",
+        "draw": "Durang",
+        "whiteWon": "Oqlar yutdi",
+        "blackWon": "Qoralar yutdi"
+      },
+      "abort": "O'yinni bekor qilish",
+      "offerDraw": "Durang taklif qilish",
+      "drawOffered": "Durang taklif qilindi",
+      "takeback": "Yurishni qaytarishni so'rash",
+      "takebackAsked": "So'rov yuborildi",
+      "opponentOffersDraw": "Raqib durang taklif qilmoqda",
+      "opponentAsksTakeback": "Raqib yurishni qaytarishni so'ramoqda",
+      "accept": "Qabul qilish",
+      "decline": "Rad etish",
+      "resign": "Taslim bo'lish",
+      "confirmResign": "Rostdan taslim bo'lasizmi?",
+      "yes": "Ha",
+      "no": "Yo'q",
+      "rematch": "Revansh",
+      "addFriend": "Do'stlarga qo'shish",
+      "friendRequested": "Do'stlik so'rovi yuborildi",
+      "nav": {
+        "label": "Yurishlar bo'ylab harakat",
+        "first": "Boshlang'ich pozitsiya",
+        "prev": "Oldingi yurish",
+        "next": "Keyingi yurish",
+        "last": "Hozirgi pozitsiya"
+      }
+    },
+    "chat": {
+      "title": "Suhbat",
+      "empty": "Hali xabar yo'q.",
+      "message": "Xabar",
+      "send": "Yuborish",
+      "tooFast": "Biroz sekinroq yozing."
+    }
   }
 }

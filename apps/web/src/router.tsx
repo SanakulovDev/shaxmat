@@ -42,6 +42,30 @@ export const router = createBrowserRouter([
         }),
       },
       {
+        path: '/play',
+        lazy: async () => ({
+          Component: (await import('./features/play/PlayPage')).PlayPage,
+        }),
+      },
+      {
+        path: '/c/:code',
+        lazy: async () => ({
+          Component: (await import('./features/play/ChallengePage')).ChallengePage,
+        }),
+      },
+      {
+        path: '/game/:id',
+        lazy: async () => ({
+          Component: (await import('./features/play/GamePage')).GamePage,
+        }),
+      },
+      {
+        path: '/friends/add/:userId',
+        lazy: async () => ({
+          Component: (await import('./features/play/AddFriendPage')).AddFriendPage,
+        }),
+      },
+      {
         path: '/profile',
         lazy: async () => ({
           Component: (await import('./features/profile/ProfilePage')).ProfilePage,

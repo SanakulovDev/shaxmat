@@ -43,16 +43,28 @@ export class GamesService {
     });
   }
 
+  // Finished games, newest first, with both players' names.
   recent(userId: string) {
+    const player = { select: { id: true, name: true } };
     return this.prisma.game.findMany({
-      where: { OR: [{ whiteId: userId }, { blackId: userId }] },
+      where: {
+        status: 'finished',
+        OR: [{ whiteId: userId }, { blackId: userId }],
+      },
       orderBy: { createdAt: 'desc' },
       take: RECENT_LIMIT,
       select: {
         id: true,
         whiteId: true,
         blackId: true,
+        white: player,
+        black: player,
         botLevel: true,
+        rated: true,
+        timeInitial: true,
+        timeIncrement: true,
+        whiteRatingDiff: true,
+        blackRatingDiff: true,
         result: true,
         termination: true,
         createdAt: true,

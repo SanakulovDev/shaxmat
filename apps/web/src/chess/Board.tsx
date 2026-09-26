@@ -2,6 +2,7 @@ import { Chess, type Square } from 'chess.js'
 import {
   type CSSProperties,
   type FormEvent,
+  type ReactNode,
   useEffect,
   useId,
   useMemo,
@@ -26,6 +27,8 @@ type BoardProps = {
   squareStyles?: Record<string, CSSProperties>
   // A picture only: no typed-move field.
   readOnly?: boolean
+  // Shown right under the board, above the typed-move field (a player bar).
+  footer?: ReactNode
 }
 
 const PROMOTION_PIECES = ['q', 'r', 'b', 'n'] as const
@@ -78,6 +81,7 @@ export function Board({
   arrows = [],
   squareStyles,
   readOnly = false,
+  footer,
 }: BoardProps) {
   const { t } = useTranslation()
   const reducedMotion = useReducedMotion()
@@ -197,6 +201,7 @@ export function Board({
           />
         )}
       </div>
+      {footer}
       <p className="sr-only" aria-live="polite" aria-atomic="true">
         {announcement}
       </p>

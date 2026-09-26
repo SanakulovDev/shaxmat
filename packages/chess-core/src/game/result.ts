@@ -6,7 +6,9 @@ export type GameEndReason =
   | 'threefold'
   | 'insufficient'
   | 'fiftyMoves'
-  | 'resign';
+  | 'resign'
+  | 'timeout'
+  | 'agreement';
 
 export type GameResult = {
   // null means a draw.

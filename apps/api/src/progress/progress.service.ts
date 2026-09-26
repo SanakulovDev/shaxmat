@@ -17,8 +17,12 @@ export class ProgressService {
   ) {}
 
   async summary(userId: string) {
-    const [puzzle, puzzlesSolved, lessons, botRows] = await Promise.all([
+    const [puzzle, gameRatings, puzzlesSolved, lessons, botRows] = await Promise.all([
       this.ratings.get(userId, 'puzzle'),
+      this.prisma.rating.findMany({
+        where: { userId, category: { not: 'puzzle' } },
+        select: { category: true, rating: true, rd: true, count: true },
+      }),
       this.prisma.puzzleAttempt.count({ where: { userId, solved: true } }),
       this.prisma.lessonProgress.findMany({
         where: { userId },
@@ -46,6 +50,13 @@ export class ProgressService {
         rd: Math.round(puzzle.rd),
         count: puzzle.count,
       },
+      // Only categories the user has played rated games in.
+      gameRatings: gameRatings.map((row) => ({
+        category: row.category,
+        rating: Math.round(row.rating),
+        rd: Math.round(row.rd),
+        count: row.count,
+      })),
       puzzlesSolved,
       lessons,
       bots: botRows.map((row) => ({

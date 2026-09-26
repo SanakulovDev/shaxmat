@@ -12,11 +12,13 @@
     "learn": "Learn",
     "skipToContent": "Skip to content",
     "main": "Main menu",
-    "guest": "Guest"
+    "guest": "Guest",
+    "play": "Play a friend"
   },
   "home": {
     "friends": {
-      "title": "Play a friend"
+      "title": "Play a friend",
+      "detail": "Send a link and play live"
     },
     "soon": "Coming soon",
     "guestNote": "You are playing as a guest. Sign up to keep your progress.",
@@ -53,7 +55,9 @@
     }
   },
   "common": {
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "copy": "Copy",
+    "copied": "Copied"
   },
   "bot": {
     "chooseOpponent": "Choose your opponent",
@@ -85,7 +89,10 @@
       "threefold": "threefold repetition",
       "insufficient": "not enough material to mate",
       "fiftyMoves": "50-move rule",
-      "resign": "resignation"
+      "resign": "resignation",
+      "timeout": "time ran out",
+      "agreement": "by agreement",
+      "aborted": "game aborted"
     },
     "levels": {
       "1": {
@@ -229,7 +236,14 @@
     "examPassed": "exam passed",
     "recentGames": "Recent games",
     "friendGame": "Game with a friend",
-    "noGames": "No games yet."
+    "noGames": "No games yet.",
+    "gameRating": "Rating: {{category}}",
+    "versus": "vs {{name}}",
+    "outcome": {
+      "won": "Win",
+      "lost": "Loss",
+      "draw": "Draw"
+    }
   },
   "board": {
     "label": "Chessboard",
@@ -266,5 +280,144 @@
     "uz": "O'zbekcha",
     "ru": "Русский",
     "en": "English"
+  },
+  "play": {
+    "title": "Play a friend",
+    "newGame": "New game",
+    "timeControl": "Time control",
+    "timeControlHint": "The first number is each player's minutes; the second is the seconds added after every move.",
+    "category": {
+      "bullet": "Bullet",
+      "blitz": "Blitz",
+      "rapid": "Rapid",
+      "classical": "Classical"
+    },
+    "yourColor": "Your colour",
+    "rated": "Rated game",
+    "ratedHint": "The result changes both players' ratings.",
+    "ratedGuest": "Rated games are for registered players.",
+    "ratedShort": "Rated",
+    "casual": "Casual",
+    "opponent": "Opponent",
+    "anyone": "Anyone with the link",
+    "createLink": "Create invite link",
+    "inviteFriend": "Challenge friend",
+    "challenge": {
+      "waiting": "Waiting for an opponent",
+      "waitingFriend": "Waiting for your friend",
+      "shareHint": "Send the link to a friend. The game starts as soon as they open it and accept.",
+      "friendHint": "Your friend has the challenge. The game starts as soon as they accept.",
+      "link": "Invite link",
+      "shareTelegram": "Share on Telegram",
+      "shareText": "Let's play chess!",
+      "cancel": "Cancel",
+      "invitedBy": "{{name}} challenges you to a game",
+      "youPlay": {
+        "white": "You play White.",
+        "black": "You play Black.",
+        "random": "Colours are picked at random."
+      },
+      "accept": "Accept",
+      "decline": "Decline",
+      "registerForRated": "This is a rated game. Register to accept it.",
+      "notFound": "Challenge not found.",
+      "closed": {
+        "accepted": "This challenge has already been accepted.",
+        "declined": "The challenge was declined.",
+        "cancelled": "The challenge was cancelled.",
+        "expired": "The challenge has expired."
+      },
+      "watch": "Watch the game",
+      "outgoing": "Your challenges"
+    },
+    "incoming": {
+      "text": "{{name}} challenges you: {{summary}}"
+    },
+    "errors": {
+      "registrationRequired": "Register to do this.",
+      "challengeClosed": "This challenge is no longer open.",
+      "notForYou": "This challenge is for another player.",
+      "notFriends": "You can only challenge friends directly.",
+      "ownChallenge": "You cannot accept your own challenge.",
+      "illegal": "That move is not allowed.",
+      "notYourTurn": "It is your opponent's turn.",
+      "network": "Connection lost. Reconnecting...",
+      "generic": "That did not work. Please try again."
+    },
+    "friends": {
+      "title": "Friends",
+      "guest": "Register to add friends.",
+      "requests": "Friend requests",
+      "accept": "Accept",
+      "decline": "Decline",
+      "online": "online",
+      "offline": "offline",
+      "challenge": "Challenge",
+      "challengeName": "Challenge {{name}}",
+      "remove": "Remove",
+      "removeName": "Remove {{name}} from friends",
+      "empty": "No friends yet. Send the link below, or add your opponent after a game.",
+      "sent": "Sent requests",
+      "cancel": "Cancel",
+      "cancelName": "Cancel request to {{name}}",
+      "inviteLink": "Your friend link",
+      "add": {
+        "title": "Friend request",
+        "prompt": "Add {{name}} as a friend?",
+        "button": "Add friend",
+        "sent": "Request sent. {{name}} appears in your friends once they accept.",
+        "self": "This is your own link. Send it to your friends.",
+        "notFound": "User not found."
+      }
+    },
+    "game": {
+      "notFound": "Game not found.",
+      "moves": "Moves",
+      "clockOf": "{{name}}'s clock",
+      "firstMoveCountdown": "{{seconds}} s left for the first move, or the game is aborted.",
+      "yourMove": "Your move",
+      "opponentMove": "Your opponent is thinking",
+      "whiteToMove": "White to move",
+      "blackToMove": "Black to move",
+      "viewingPast": "Showing an earlier position",
+      "aborted": "Game aborted",
+      "outcome": {
+        "won": "You won!",
+        "lost": "You lost",
+        "draw": "Draw",
+        "whiteWon": "White won",
+        "blackWon": "Black won"
+      },
+      "abort": "Abort game",
+      "offerDraw": "Offer a draw",
+      "drawOffered": "Draw offered",
+      "takeback": "Ask for a takeback",
+      "takebackAsked": "Request sent",
+      "opponentOffersDraw": "Your opponent offers a draw",
+      "opponentAsksTakeback": "Your opponent asks to take back a move",
+      "accept": "Accept",
+      "decline": "Decline",
+      "resign": "Resign",
+      "confirmResign": "Resign for sure?",
+      "yes": "Yes",
+      "no": "No",
+      "rematch": "Rematch",
+      "addFriend": "Add friend",
+      "friendRequested": "Friend request sent",
+      "nav": {
+        "label": "Move through the game",
+        "first": "Starting position",
+        "prev": "Previous move",
+        "next": "Next move",
+        "last": "Current position"
+      }
+    },
+    "chat": {
+      "title": "Chat",
+      "empty": "No messages yet.",
+      "message": "Message",
+      "send": "Send",
+      "tooFast": "Please slow down a little."
+    }
   }
 }

@@ -4,6 +4,7 @@ import { examStatus, type ProgressSummary } from './progress'
 
 const summary = (overrides: Partial<ProgressSummary>): ProgressSummary => ({
   puzzleRating: { rating: 1000, rd: 350, count: 0 },
+  gameRatings: [],
   puzzlesSolved: 0,
   lessons: [],
   bots: [],

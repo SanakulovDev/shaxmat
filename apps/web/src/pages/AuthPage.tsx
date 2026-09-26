@@ -1,7 +1,8 @@
 import { type FormEvent, useCallback, useId, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link, Navigate, useNavigate } from 'react-router'
+import { Link, Navigate, useNavigate, useSearchParams } from 'react-router'
 import { authErrorKey } from '../auth/errors'
+import { safeNext } from '../auth/next'
 import { type TelegramUser, useAuth } from '../auth/store'
 import { TelegramLoginButton } from '../components/TelegramLoginButton'
 
@@ -13,6 +14,8 @@ const inputClass =
 export function AuthPage({ mode }: { mode: Mode }) {
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const [params] = useSearchParams()
+  const next = safeNext(params.get('next'))
   const { user, login, register, loginWithTelegram, continueAsGuest } =
     useAuth()
   const [error, setError] = useState<string | null>(null)
@@ -26,14 +29,14 @@ export function AuthPage({ mode }: { mode: Mode }) {
       setPending(true)
       try {
         await action()
-        await navigate('/')
+        await navigate(next)
       } catch (caught) {
         setError(errorKey ?? authErrorKey(caught))
       } finally {
         setPending(false)
       }
     },
-    [navigate],
+    [navigate, next],
   )
 
   const onTelegramAuth = useCallback(
@@ -42,7 +45,7 @@ export function AuthPage({ mode }: { mode: Mode }) {
     [run, loginWithTelegram],
   )
 
-  if (user && !user.isGuest) return <Navigate to="/" replace />
+  if (user && !user.isGuest) return <Navigate to={next} replace />
 
   function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -152,7 +155,7 @@ export function AuthPage({ mode }: { mode: Mode }) {
       <p className="mt-6 text-center text-sm text-muted">
         {t(isLogin ? 'auth.noAccount' : 'auth.haveAccount')}{' '}
         <Link
-          to={isLogin ? '/register' : '/login'}
+          to={`${isLogin ? '/register' : '/login'}${next === '/' ? '' : `?next=${encodeURIComponent(next)}`}`}
           className="font-medium text-board-dark underline"
         >
           {t(isLogin ? 'nav.register' : 'nav.login')}

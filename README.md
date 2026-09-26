@@ -5,9 +5,9 @@ Shaxmatni noldan professional darajagacha o'rgatadigan platforma: ovozli interak
 ## Tuzilma
 
 ```
-apps/api              NestJS 12 + Prisma 7 + PostgreSQL: auth, o'yinlar, masalalar, progress
+apps/api              NestJS 12 + Prisma 7 + PostgreSQL + Socket.IO: auth, o'yinlar, do'stlar, masalalar, progress
 apps/web              React 19 + Vite + Tailwind 4: interfeys (o'zbek, rus, ingliz)
-packages/chess-core   bot darajalari, Glicko-2 reyting, o'yin natijasi (web va api uchun umumiy)
+packages/chess-core   bot darajalari, Glicko-2 reyting, o'yin natijasi, vaqt nazorati va soat (web va api uchun umumiy)
 packages/content      darslar, bosqichlar, dars validatori, audio generatori
 ```
 
@@ -31,7 +31,9 @@ pnpm dev                      # API: http://localhost:3100, web: http://localhos
 - **Ovozli tushuntirish**: har bir dars matnini tanlangan tilda o'qib beradi. Yozuvlarni generatsiya qilish uchun `.env` ga Azure Speech kalitini qo'ying va `pnpm content:audio` ni ishga tushiring (`-- --dry-run` belgilar sonini ko'rsatadi, `-- --lang ru` bitta til uchun). Fayllar `apps/web/public/audio/` ga yoziladi; matn o'zgarsa, faqat o'sha qism qayta yoziladi. Rus va ingliz tillari uchun yozuv bo'lmasa, brauzer ovozi ishlatiladi.
 - **Bot bilan o'yin** (`/bot`): 10 daraja. Stockfish 19 Lite brauzerda Web Worker ichida ishlaydi (`apps/web/public/stockfish`, GPL-3.0).
 - **Masalalar** (`/puzzles`): Lichess bazasidan, mavzu bo'yicha filtr, Glicko-2 reyting.
-- **Profil** (`/profile`): reyting, darslar, bosqichlar, so'nggi o'yinlar.
+- **Do'st bilan o'yin** (`/play`): taklif havolasi (`/c/:code`, Telegramda ulashish mumkin) yoki do'stni to'g'ridan-to'g'ri chaqirish. 6 ta vaqt nazorati (1+0 dan 30+0 gacha), rang tanlash, reytingli yoki o'rtoqlik o'yini. O'yin serverda boshqariladi: har bir yurish tekshiriladi, soat serverda hisoblanadi, vaqt tugasa o'yin tugaydi. Birinchi yurish 30 soniya ichida qilinmasa, o'yin bekor bo'ladi. Durang taklifi, yurishni qaytarish, taslim bo'lish, revansh, tomosha qilish (`/game/:id`), do'stlar o'rtasida chat.
+- **Do'stlar**: shaxsiy havola (`/friends/add/:id`) yoki o'yindan keyin raqibni qo'shish; kim onlayn ekani ko'rinadi. Faqat ro'yxatdan o'tganlar uchun. Reytingli o'yinlar ham faqat ro'yxatdan o'tganlar o'rtasida (Glicko-2, bullet/blitz/rapid/classical alohida).
+- **Profil** (`/profile`): reytinglar, darslar, bosqichlar, so'nggi o'yinlar (har birini qayta ko'rish mumkin).
 - **Auth**: email + parol, Telegram, mehmon rejimi. Mehmon ro'yxatdan o'tsa, progressi saqlanib qoladi.
 
 ## Yangi dars qo'shish

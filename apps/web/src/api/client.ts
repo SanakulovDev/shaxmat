@@ -30,6 +30,10 @@ export function setSession(session: AuthResponse | null) {
   sessionListener(session)
 }
 
+export function getAccessToken(): string | null {
+  return accessToken
+}
+
 export function onSessionChange(listener: SessionListener) {
   sessionListener = listener
 }

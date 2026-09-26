@@ -34,6 +34,19 @@ describe('bot games and progress (e2e)', () => {
       result: '1-0',
       termination: 'checkmate',
     });
+
+    // The saved game can be replayed move by move.
+    const view = await request(app.getHttpServer())
+      .get(`/api/games/${response.body.id}`)
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200);
+    expect(view.body).toMatchObject({
+      status: 'finished',
+      botLevel: 1,
+      black: null,
+      clock: null,
+      moves: ['e2e4', 'e7e5', 'f1c4', 'b8c6', 'd1h5', 'g8f6', 'h5f7'],
+    });
   });
 
   it('records a resignation as a loss', async () => {
@@ -69,6 +82,13 @@ describe('bot games and progress (e2e)', () => {
 
   it('requires a session', async () => {
     await request(app.getHttpServer()).post('/api/games/bot').send({}).expect(401);
+  });
+
+  it('answers 404 for an unknown game', async () => {
+    await request(app.getHttpServer())
+      .get(`/api/games/${crypto.randomUUID()}`)
+      .set('Authorization', `Bearer ${token}`)
+      .expect(404);
   });
 
   it('sums up bot results and completed lessons', async () => {
