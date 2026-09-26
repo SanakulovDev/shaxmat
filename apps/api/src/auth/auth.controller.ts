@@ -11,8 +11,8 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { ThrottlerGuard } from '@nestjs/throttler';
 import type { CookieOptions, Request, Response } from 'express';
+import { RateLimitGuard } from '../common/rate-limit.guard.js';
 import type { Env } from '../config/env.js';
 import {
   type AuthUser,
@@ -41,7 +41,7 @@ export class AuthController {
   ) {}
 
   @Post('register')
-  @UseGuards(ThrottlerGuard)
+  @UseGuards(RateLimitGuard)
   async register(
     @Body({ schema: RegisterSchema }) dto: RegisterDto,
     @Req() req: Request,
@@ -53,7 +53,7 @@ export class AuthController {
 
   @Post('login')
   @HttpCode(200)
-  @UseGuards(ThrottlerGuard)
+  @UseGuards(RateLimitGuard)
   async login(
     @Body({ schema: LoginSchema }) dto: LoginDto,
     @Res({ passthrough: true }) res: Response,
@@ -63,7 +63,7 @@ export class AuthController {
 
   @Post('telegram')
   @HttpCode(200)
-  @UseGuards(ThrottlerGuard)
+  @UseGuards(RateLimitGuard)
   async telegram(
     @Body({ schema: TelegramAuthSchema }) dto: TelegramAuthDto,
     @Req() req: Request,
@@ -74,7 +74,7 @@ export class AuthController {
   }
 
   @Post('guest')
-  @UseGuards(ThrottlerGuard)
+  @UseGuards(RateLimitGuard)
   async guest(@Res({ passthrough: true }) res: Response) {
     return this.respond(res, await this.auth.createGuest());
   }

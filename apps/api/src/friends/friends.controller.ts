@@ -7,9 +7,9 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { ThrottlerGuard } from '@nestjs/throttler';
 import { z } from 'zod';
 import { type AuthUser, CurrentUser, JwtAuthGuard } from '../auth/auth.guard.js';
+import { RateLimitGuard } from '../common/rate-limit.guard.js';
 import { FriendsService } from './friends.service.js';
 
 const UserIdSchema = z.uuid();
@@ -26,7 +26,7 @@ export class FriendsController {
 
   @Post(':userId')
   @HttpCode(204)
-  @UseGuards(ThrottlerGuard)
+  @UseGuards(RateLimitGuard)
   async request(
     @CurrentUser() user: AuthUser,
     @Param('userId', { schema: UserIdSchema }) userId: string,

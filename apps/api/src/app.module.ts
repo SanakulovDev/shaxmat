@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { ThrottlerModule } from '@nestjs/throttler';
 import { AuthModule } from './auth/auth.module.js';
 import { validateEnv } from './config/env.js';
 import { FriendsModule } from './friends/friends.module.js';
@@ -18,7 +17,6 @@ import { PuzzlesModule } from './puzzles/puzzles.module.js';
       envFilePath: ['../../.env'],
       validate: validateEnv,
     }),
-    ThrottlerModule.forRoot([{ ttl: 60_000, limit: 20 }]),
     PrismaModule,
     AuthModule,
     GamesModule,

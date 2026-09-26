@@ -8,8 +8,8 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { ThrottlerGuard } from '@nestjs/throttler';
 import { type AuthUser, CurrentUser, JwtAuthGuard } from '../auth/auth.guard.js';
+import { RateLimitGuard } from '../common/rate-limit.guard.js';
 import {
   ChallengeCodeSchema,
   type CreateChallengeDto,
@@ -23,7 +23,7 @@ export class ChallengesController {
   constructor(private readonly challenges: ChallengesService) {}
 
   @Post()
-  @UseGuards(ThrottlerGuard)
+  @UseGuards(RateLimitGuard)
   create(
     @CurrentUser() user: AuthUser,
     @Body({ schema: CreateChallengeSchema }) dto: CreateChallengeDto,

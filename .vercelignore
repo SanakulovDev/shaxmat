@@ -1,0 +1,16 @@
+# Uploaded by `vercel deploy`: sources only. Secrets and build output stay local.
+.env
+.env.*
+!.env.example
+node_modules
+**/node_modules
+**/dist
+coverage
+*.tsbuildinfo
+apps/api/src/generated
+.DS_Store
+*.log
+MASTER_PLAN.md
+.agents
+.claude
+skills-lock.json
