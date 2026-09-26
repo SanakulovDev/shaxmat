@@ -86,17 +86,20 @@ export type ChatLine = { userId: string; name: string; text: string; at: number 
 const TIMER_SLACK_MS = 20;
 const CHAT_LIMIT = 50;
 const CHAT_INTERVAL_MS = 1_000;
-const CHAT_KEEP_AFTER_END_MS = 10 * 60_000;
+// Tries of one update when another instance changed the game meanwhile.
+const CONFLICT_TRIES = 3;
 
-// Runs games between people. The database holds each game's state; one
-// update per game runs at a time, and a timer ends a game whose clock runs
-// out. Timers and the update queue live in this process.
+// Runs games between people. The database holds each game's state. Within
+// one instance, updates of a game run one at a time; between instances, a
+// revision check makes the later write reload and try again. Every
+// instance keeps a timer for the games it knows, and clients ask for a
+// clock check when theirs shows zero, so a game ends on time even when the
+// instance that set a timer is gone.
 @Injectable()
 export class PlayService implements OnModuleInit, OnModuleDestroy {
   private readonly logger = new Logger(PlayService.name);
   private readonly queues = new Map<string, Promise<unknown>>();
   private readonly timers = new Map<string, NodeJS.Timeout>();
-  private readonly chats = new Map<string, ChatLine[]>();
 
   constructor(
     private readonly prisma: PrismaService,
@@ -130,7 +133,7 @@ export class PlayService implements OnModuleInit, OnModuleDestroy {
   }
 
   act(userId: string, gameId: string, action: GameAction): Promise<void> {
-    return this.serial(gameId, async () => {
+    return this.update(gameId, async () => {
       const row = await this.load(gameId);
       const side = sideOf(row, userId);
       if (!side) throw new PlayError('notPlayer');
@@ -144,11 +147,29 @@ export class PlayService implements OnModuleInit, OnModuleDestroy {
   // Ends the game if its clock ran out. Runs on the timer, and whenever a
   // client asks, in case the timer was lost.
   settle(gameId: string): Promise<void> {
-    return this.serial(gameId, async () => {
+    return this.update(gameId, async () => {
       const row = await this.load(gameId);
       if (row.status !== 'active') return;
       const next = settle(toLive(row), this.now());
       if (next) await this.save(row, next);
+    });
+  }
+
+  // Runs one update of a game in this instance's queue, and runs it again
+  // from fresh state if another instance wrote the game first.
+  private update(gameId: string, task: () => Promise<void>): Promise<void> {
+    return this.serial(gameId, async () => {
+      for (let attempt = 1; ; attempt++) {
+        try {
+          return await task();
+        } catch (error) {
+          const retry =
+            error instanceof PlayError &&
+            error.code === 'conflict' &&
+            attempt < CONFLICT_TRIES;
+          if (!retry) throw error;
+        }
+      }
     });
   }
 
@@ -159,24 +180,37 @@ export class PlayService implements OnModuleInit, OnModuleDestroy {
     if (!side) throw new PlayError('notPlayer');
     if (!(await this.chatAllowed(row))) throw new PlayError('notAllowed');
 
-    const lines = this.chats.get(gameId) ?? [];
     const now = this.now();
-    const last = lines.findLast((line) => line.userId === userId);
-    if (last && now - last.at < CHAT_INTERVAL_MS) throw new PlayError('tooFast');
+    const last = await this.prisma.chatMessage.findFirst({
+      where: { gameId, userId },
+      orderBy: { createdAt: 'desc' },
+      select: { createdAt: true },
+    });
+    if (last && now - last.createdAt.getTime() < CHAT_INTERVAL_MS) {
+      throw new PlayError('tooFast');
+    }
 
-    const player = side === 'w' ? row.white : row.black;
-    const line = { userId, name: player?.name ?? '', text, at: now };
-    this.chats.set(gameId, [...lines, line].slice(-CHAT_LIMIT));
+    const message = await this.prisma.chatMessage.create({
+      data: { gameId, userId, text, createdAt: new Date(now) },
+      include: { user: { select: { name: true } } },
+    });
+    const line = toChatLine(message);
     for (const id of [row.whiteId, row.blackId]) {
       if (id) this.realtime.toUser(id, 'game:chat', { gameId, line });
     }
   }
 
-  // The chat so far, or null when the user cannot chat in this game.
+  // The latest chat lines, or null when the user cannot chat in this game.
   async chatFor(gameId: string, userId: string): Promise<ChatLine[] | null> {
     const row = await this.load(gameId);
     if (!sideOf(row, userId) || !(await this.chatAllowed(row))) return null;
-    return this.chats.get(gameId) ?? [];
+    const messages = await this.prisma.chatMessage.findMany({
+      where: { gameId },
+      orderBy: { createdAt: 'desc' },
+      take: CHAT_LIMIT,
+      include: { user: { select: { name: true } } },
+    });
+    return messages.reverse().map(toChatLine);
   }
 
   private chatAllowed(row: GameRow): Promise<boolean> | false {
@@ -247,12 +281,6 @@ export class PlayService implements OnModuleInit, OnModuleDestroy {
     const saved = await this.load(row.id);
     this.realtime.toGame(saved.id, 'game:state', this.toView(saved));
     this.schedule(saved);
-    if (saved.status !== 'active') {
-      setTimeout(
-        () => this.chats.delete(saved.id),
-        CHAT_KEEP_AFTER_END_MS,
-      ).unref();
-    }
   }
 
   private async rate(
@@ -320,6 +348,20 @@ export class PlayService implements OnModuleInit, OnModuleDestroy {
       serverNow: this.now(),
     };
   }
+}
+
+function toChatLine(message: {
+  userId: string;
+  text: string;
+  createdAt: Date;
+  user: { name: string };
+}): ChatLine {
+  return {
+    userId: message.userId,
+    name: message.user.name,
+    text: message.text,
+    at: message.createdAt.getTime(),
+  };
 }
 
 function sideOf(row: GameRow, userId: string): Side | null {

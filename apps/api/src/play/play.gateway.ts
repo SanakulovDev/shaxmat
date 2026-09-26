@@ -86,13 +86,24 @@ export class PlayGateway
   async handleConnection(socket: Socket) {
     const user = userOf(socket);
     await socket.join(userRoom(user.id));
-    if (this.realtime.connected(user.id)) await this.presenceChanged(user.id);
+    try {
+      if (await this.realtime.connected(user.id)) {
+        await this.presenceChanged(user.id);
+      }
+    } catch (error) {
+      this.logger.error('Presence update failed', error);
+    }
   }
 
   async handleDisconnect(socket: Socket) {
     const user = socket.data.user as AuthUser | undefined;
-    if (user && this.realtime.disconnected(user.id)) {
-      await this.presenceChanged(user.id);
+    if (!user) return;
+    try {
+      if (await this.realtime.disconnected(user.id)) {
+        await this.presenceChanged(user.id);
+      }
+    } catch (error) {
+      this.logger.error('Presence update failed', error);
     }
   }
 

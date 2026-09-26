@@ -49,6 +49,15 @@ pnpm test                     # unit testlar
 pnpm --filter api test:e2e    # migratsiya qilingan bazani talab qiladi
 ```
 
+## Vercel'ga deploy
+
+Bitta Vercel loyihasi: veb-ilova statik fayl sifatida (`apps/web/dist`), API esa bitta Vercel Function sifatida (`api/index.js` → `apps/api/dist/serverless.js`). Sozlamalar `vercel.json` da.
+
+- Baza: Neon (Vercel Storage). Vercel `DATABASE_URL` (pooler) va `DATABASE_URL_UNPOOLED` (to'g'ridan-to'g'ri ulanish) ni o'zi qo'shadi. Production build'da `prisma migrate deploy` ishlaydi.
+- Qo'shimcha env: `JWT_ACCESS_SECRET` (`openssl rand -base64 48`), `ENABLE_EXPERIMENTAL_COREPACK=1` (pnpm 11 uchun).
+- Real vaqt: Socket.IO faqat WebSocket orqali. Har bir function instance o'z ulanishlarini ushlab turadi, shuning uchun xabarlar instance'lar orasida Postgres LISTEN/NOTIFY (`@socket.io/postgres-adapter`) orqali uzatiladi. Onlayn holat va chat bazada saqlanadi. Ulanish function vaqt limitida (300 s) uziladi va client o'zi qayta ulanadi.
+- Masalalarni production bazaga yuklash: `DATABASE_URL=... pnpm --filter api puzzles:import`.
+
 ## Telegram orqali kirish
 
 `.env` da `TELEGRAM_BOT_TOKEN` va `VITE_TELEGRAM_BOT_USERNAME` ni to'ldiring, @BotFather da `/setdomain` bilan domen belgilang. Widget oddiy `localhost` da ishlamaydi — lokal sinov uchun tunnel (masalan, ngrok) kerak.

@@ -16,6 +16,7 @@
     "db:down": "docker compose down",
     "db:migrate": "pnpm --filter api prisma:migrate",
     "postinstall": "pnpm --filter @shaxmat/chess-core --filter @shaxmat/content build",
-    "content:audio": "pnpm --filter @shaxmat/content audio"
+    "content:audio": "pnpm --filter @shaxmat/content audio",
+    "vercel-build": "pnpm --filter api build && pnpm --filter web build && if [ \"$VERCEL_ENV\" = production ]; then pnpm --filter api prisma:deploy; fi"
   }
 }

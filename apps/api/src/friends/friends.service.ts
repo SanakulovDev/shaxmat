@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import type { AuthUser } from '../auth/auth.guard.js';
 import { PrismaService } from '../prisma/prisma.service.js';
-import { RealtimeService } from '../realtime/realtime.service.js';
+import { isOnline, RealtimeService } from '../realtime/realtime.service.js';
 
 export type PublicUser = {
   id: string;
@@ -41,23 +41,22 @@ export class FriendsService {
   }
 
   async list(userId: string) {
+    const person = { select: { ...PUBLIC_USER, lastSeenAt: true } };
     const rows = await this.prisma.friendship.findMany({
       where: { OR: [{ requesterId: userId }, { addresseeId: userId }] },
-      include: {
-        requester: { select: PUBLIC_USER },
-        addressee: { select: PUBLIC_USER },
-      },
+      include: { requester: person, addressee: person },
       orderBy: { updatedAt: 'desc' },
     });
 
     const friends = [];
     const incoming = [];
     const outgoing = [];
+    const now = Date.now();
     for (const row of rows) {
       const mine = row.requesterId === userId;
-      const other = mine ? row.addressee : row.requester;
+      const { lastSeenAt, ...other } = mine ? row.addressee : row.requester;
       if (row.status === 'accepted') {
-        friends.push({ ...other, online: this.realtime.isOnline(other.id) });
+        friends.push({ ...other, online: isOnline(lastSeenAt, now) });
       } else if (mine) {
         outgoing.push(other);
       } else {

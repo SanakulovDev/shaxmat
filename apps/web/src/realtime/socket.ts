@@ -21,6 +21,9 @@ export function getSocket(): Socket {
 function createSocket(): Socket {
   const created = io({
     path: '/api/socket.io',
+    // WebSocket only: long-polling needs sticky sessions, which serverless
+    // instances do not have.
+    transports: ['websocket'],
     autoConnect: false,
     // Read on every connect, so a refreshed token is sent.
     auth: (send) => send({ token: getAccessToken() }),

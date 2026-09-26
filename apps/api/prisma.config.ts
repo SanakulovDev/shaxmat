@@ -10,6 +10,8 @@ export default defineConfig({
   },
   datasource: {
     // Optional so `prisma generate` works without a database (fresh clone, CI).
-    url: process.env.DATABASE_URL,
+    // Migrations need a direct connection; hosted Postgres such as Neon
+    // offers it as DATABASE_URL_UNPOOLED next to the pooled DATABASE_URL.
+    url: process.env.DATABASE_URL_UNPOOLED ?? process.env.DATABASE_URL,
   },
 });

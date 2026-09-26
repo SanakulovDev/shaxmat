@@ -16,6 +16,8 @@ model User {
   name         String
   avatarUrl    String?
   isGuest      Boolean          @default(false)
+  // Refreshed while the user has an open socket; see RealtimeService.
+  lastSeenAt   DateTime?
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
   sessions     Session[]
@@ -28,6 +30,7 @@ model User {
   invitations  Challenge[]      @relation("ChallengeDest")
   friendsAsked Friendship[]     @relation("FriendRequester")
   friendsOf    Friendship[]     @relation("FriendAddressee")
+  chatMessages ChatMessage[]
 }
 
 // One row per refresh token. Only a SHA-256 hash of the token secret is stored.
@@ -112,6 +115,7 @@ model Game {
   challenge       Challenge?
   createdAt       DateTime        @default(now())
   endedAt         DateTime?
+  chatMessages    ChatMessage[]
 
   @@index([whiteId, createdAt])
   @@index([blackId, createdAt])
@@ -216,4 +220,27 @@ model LessonProgress {
   completedAt DateTime @default(now())
 
   @@id([userId, lessonSlug])
+}
+
+// Chat between two friends in their game.
+model ChatMessage {
+  id        String   @id @default(uuid(7)) @db.Uuid
+  gameId    String   @db.Uuid
+  game      Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  userId    String   @db.Uuid
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  text      String
+  createdAt DateTime @default(now())
+
+  @@index([gameId, createdAt])
+}
+
+// Used by the Socket.IO Postgres adapter for payloads over the NOTIFY size
+// limit. The adapter reads and cleans it up; the app never touches it.
+model SocketIoAttachment {
+  id        BigInt    @id @default(autoincrement())
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz
+  payload   Bytes?
+
+  @@map("socket_io_attachments")
 }

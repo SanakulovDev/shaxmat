@@ -361,6 +361,33 @@ describe('games between people (e2e)', () => {
     expect((await http(aziz).get('/friends')).body.friends).toEqual([]);
   });
 
+  it('delivers moves between players on different API instances', async () => {
+    // On Vercel each function instance holds its own sockets.
+    const other = await createTestApp((builder) =>
+      builder.overrideProvider(NOW).useValue(() => now),
+    );
+    try {
+      const otherUrl = await listen(other);
+      const [alice, bob] = await Promise.all([createGuest(app), createGuest(app)]);
+      const { gameId } = await startGame(alice, bob);
+      const white = await socketFor(alice);
+      const black = await connect(otherUrl, bob.accessToken);
+      sockets.push(black);
+      await join(white, gameId);
+      await join(black, gameId);
+
+      const seenByBlack = next<GameView>(black, 'game:state', (s) => s.moves.length === 1);
+      expect(await act(white, gameId, { type: 'move', uci: 'e2e4' })).toEqual({ ok: true });
+      expect((await seenByBlack).moves).toEqual(['e2e4']);
+
+      const seenByWhite = next<GameView>(white, 'game:state', (s) => s.moves.length === 2);
+      expect(await act(black, gameId, { type: 'move', uci: 'e7e5' })).toEqual({ ok: true });
+      expect((await seenByWhite).moves).toEqual(['e2e4', 'e7e5']);
+    } finally {
+      await other.close();
+    }
+  });
+
   it('rejects sockets without a valid token', async () => {
     await expect(connect(url, 'not-a-token')).rejects.toThrow('unauthorized');
   });
