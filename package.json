@@ -17,6 +17,6 @@
     "db:migrate": "pnpm --filter api prisma:migrate",
     "postinstall": "pnpm --filter @shaxmat/chess-core --filter @shaxmat/content build",
     "content:audio": "pnpm --filter @shaxmat/content audio",
-    "vercel-build": "pnpm --filter api build && pnpm --filter web build && if [ \"$VERCEL_ENV\" = production ]; then pnpm --filter api prisma:deploy; fi"
+    "vercel-build": "pnpm --filter @shaxmat/chess-core --filter @shaxmat/content build && pnpm --filter api prisma:generate && pnpm --filter api build && pnpm --filter api bundle:vercel && pnpm --filter web build && if [ \"$VERCEL_ENV\" = production ]; then pnpm --filter api prisma:deploy; fi"
   }
 }

@@ -1,5 +1,5 @@
 // Vercel Function that serves the NestJS API, including Socket.IO over
-// WebSocket. The app is compiled to apps/api/dist by the build command.
-import { createServer } from '../apps/api/dist/serverless.js';
+// WebSocket. The build bundles the API into apps/api/dist-vercel.
+import { createServer } from '../apps/api/dist-vercel/server.mjs';
 
 export default await createServer();

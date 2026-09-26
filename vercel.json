@@ -8,8 +8,7 @@
   ],
   "functions": {
     "api/index.js": {
-      "maxDuration": 300,
-      "includeFiles": "apps/api/dist/**"
+      "maxDuration": 300
     }
   },
   "rewrites": [

@@ -51,10 +51,11 @@ pnpm --filter api test:e2e    # migratsiya qilingan bazani talab qiladi
 
 ## Vercel'ga deploy
 
-Bitta Vercel loyihasi: veb-ilova statik fayl sifatida (`apps/web/dist`), API esa bitta Vercel Function sifatida (`api/index.js` → `apps/api/dist/serverless.js`). Sozlamalar `vercel.json` da.
+Bitta Vercel loyihasi: veb-ilova statik fayl sifatida (`apps/web/dist`), API esa bitta Vercel Function sifatida (`api/index.js`). Sozlamalar `vercel.json` da. API esbuild bilan bitta faylga yig'iladi (`apps/api/scripts/bundle-vercel.mjs` → `apps/api/dist-vercel/server.mjs`): Vercel fayl kuzatuvi Nest'ning ixtiyoriy dinamik importlarini (WebSocket gateway) topmaydi, uning yuklovchisi esa ES modullarni `require()` qila olmaydi.
 
 - Baza: Neon (Vercel Storage). Vercel `DATABASE_URL` (pooler) va `DATABASE_URL_UNPOOLED` (to'g'ridan-to'g'ri ulanish) ni o'zi qo'shadi. Production build'da `prisma migrate deploy` ishlaydi.
-- Qo'shimcha env: `JWT_ACCESS_SECRET` (`openssl rand -base64 48`), `ENABLE_EXPERIMENTAL_COREPACK=1` (pnpm 11 uchun).
+- Qo'shimcha env: `JWT_ACCESS_SECRET` (`openssl rand -base64 48`), `ENABLE_EXPERIMENTAL_COREPACK=1` (pnpm 11 uchun), `NODE_ENV=production`.
+- Deploy: `vercel deploy --prod` (CLI `.vercelignore` bo'yicha faqat manba kodni yuklaydi).
 - Real vaqt: Socket.IO faqat WebSocket orqali. Har bir function instance o'z ulanishlarini ushlab turadi, shuning uchun xabarlar instance'lar orasida Postgres LISTEN/NOTIFY (`@socket.io/postgres-adapter`) orqali uzatiladi. Onlayn holat va chat bazada saqlanadi. Ulanish function vaqt limitida (300 s) uziladi va client o'zi qayta ulanadi.
 - Masalalarni production bazaga yuklash: `DATABASE_URL=... pnpm --filter api puzzles:import`.
 

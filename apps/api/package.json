@@ -25,7 +25,8 @@
     "prisma:migrate": "prisma migrate dev && prisma generate",
     "prisma:deploy": "prisma migrate deploy",
     "postinstall": "prisma generate",
-    "puzzles:import": "tsx scripts/import-puzzles.ts"
+    "puzzles:import": "tsx scripts/import-puzzles.ts",
+    "bundle:vercel": "node scripts/bundle-vercel.mjs"
   },
   "dependencies": {
     "@nestjs/common": "^12.0.1",
@@ -60,6 +61,7 @@
     "@types/pg": "^8.23.1",
     "@types/supertest": "^7.0.0",
     "@vitest/coverage-v8": "^4.1.2",
+    "esbuild": "0.28.2",
     "oxlint": "^1.58.0",
     "oxlint-tsgolint": "^7.0.2001",
     "prettier": "^3.4.2",

@@ -5,6 +5,7 @@
 node_modules
 **/node_modules
 **/dist
+**/dist-vercel
 coverage
 *.tsbuildinfo
 apps/api/src/generated
