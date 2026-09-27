@@ -180,6 +180,7 @@
   },
   "common": {
     "loading": "Yuklanmoqda...",
+    "retry": "Qayta urinish",
     "copy": "Nusxa olish",
     "copied": "Nusxa olindi"
   },

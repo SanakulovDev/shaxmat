@@ -83,13 +83,21 @@ export function PuzzlePage() {
       {puzzle.isPending && (
         <p className="text-muted">{t('common.loading')}</p>
       )}
-      {puzzle.isError && (
-        <p className="text-muted">
-          {puzzle.error instanceof ApiError && puzzle.error.status === 404
-            ? t('puzzles.noneLeft')
-            : t('auth.errors.unknown')}
-        </p>
-      )}
+      {puzzle.isError &&
+        (puzzle.error instanceof ApiError && puzzle.error.status === 404 ? (
+          <p className="text-muted">{t('puzzles.noneLeft')}</p>
+        ) : (
+          <div role="alert" className="flex flex-wrap items-center gap-3">
+            <p className="text-muted">{t('auth.errors.unknown')}</p>
+            <button
+              type="button"
+              onClick={() => void puzzle.refetch()}
+              className="rounded-lg border border-line bg-surface px-3 py-1.5 text-sm font-medium hover:bg-paper"
+            >
+              {t('common.retry')}
+            </button>
+          </div>
+        ))}
       {puzzle.data && (
         <PuzzleSolver
           key={puzzle.data.id}

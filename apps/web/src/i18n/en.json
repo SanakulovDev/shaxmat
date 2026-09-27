@@ -185,6 +185,7 @@
   },
   "common": {
     "loading": "Loading...",
+    "retry": "Try again",
     "copy": "Copy",
     "copied": "Copied"
   },
