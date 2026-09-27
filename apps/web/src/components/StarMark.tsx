@@ -1,6 +1,6 @@
 // The 8-pointed girih star from Central Asian tilework: two overlapping
 // squares. It marks progress across the app.
-const STAR_POINTS =
+export const STAR_POINTS =
   '12,0 15.51,3.52 20.49,3.52 20.48,8.49 24,12 20.48,15.51 20.49,20.49 15.51,20.48 12,24 8.49,20.48 3.52,20.49 3.52,15.51 0,12 3.52,8.49 3.52,3.52 8.49,3.52'
 
 export type StarState = 'done' | 'current' | 'todo'

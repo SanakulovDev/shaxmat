@@ -1,7 +1,6 @@
 {
   "app": {
-    "name": "Shaxmat",
-    "tagline": "Shaxmatni noldan professional darajagacha o'rganing"
+    "name": "ChessLive"
   },
   "nav": {
     "login": "Kirish",
@@ -32,7 +31,131 @@
     "puzzleRating": "Reytingingiz: {{rating}}",
     "nextBot": "Keyingi raqib: {{name}}, {{level}}-daraja",
     "path": "O'quv yo'li",
-    "courseProgress": "Kurs bo'yicha progress"
+    "courseProgress": "Kurs bo'yicha progress",
+    "pathEyebrow": "Yo'l xaritasi",
+    "pathSubtitle": "Asoslardan professional darajagacha bosqichma-bosqich. Har bir bosqich oxirida imtihon bor.",
+    "hero": {
+      "badge": "Bepul · o'zbek, rus va ingliz tillarida",
+      "title": "Shaxmatni noldan <gold>ustalikkacha</gold> o'rganing",
+      "lede": "Qisqa interaktiv darslar, {{levels}} darajali bot, haqiqiy partiyalardan olingan masalalar va do'stlar bilan jonli o'yin — hammasi bir joyda.",
+      "start": "Bepul boshlash",
+      "playBot": "Bot bilan o'ynash",
+      "gameTitle": "Opera partiyasi",
+      "gameMeta": "Pol Morfi · Parij, 1858",
+      "gameLabel": "Taxtada Pol Morfining 1858-yildagi mashhur «Opera partiyasi» o'ynalmoqda",
+      "play": "Davom ettirish",
+      "pause": "To'xtatish"
+    },
+    "stats": {
+      "lessons": "dars",
+      "bots": "bot darajasi",
+      "puzzles": "masala",
+      "languages": "til"
+    },
+    "features": {
+      "eyebrow": "Imkoniyatlar",
+      "title": "O'rganish uchun kerak bo'lgan hammasi",
+      "subtitle": "Birinchi yurishdan birinchi g'alabagacha — o'z sur'atingizda.",
+      "lessons": {
+        "title": "Interaktiv darslar",
+        "text": "Qoidalarni taxtada yurib o'rganasiz: har bir darsda qisqa tushuntirish va mashqlar bor.",
+        "link": "Darslarga o'tish"
+      },
+      "bot": {
+        "title": "{{levels}} darajali bot",
+        "text": "Yangi boshlovchidan professionalgacha. Kuchingizga mos raqibni tanlang va darajani asta-sekin oshiring.",
+        "link": "O'ynash"
+      },
+      "puzzles": {
+        "title": "Taktik masalalar",
+        "text": "Haqiqiy partiyalardan olingan masalalar. Har bir yechim reytingingizni o'zgartiradi.",
+        "link": "Masala yechish"
+      },
+      "friends": {
+        "title": "Do'stlar bilan o'yin",
+        "text": "Havola yuboring va jonli soat bilan o'ynang. Ro'yxatdan o'tish shart emas.",
+        "link": "Do'stni chaqirish"
+      }
+    },
+    "pieces": {
+      "eyebrow": "Donalar",
+      "title": "Donalar qanday yuradi?",
+      "subtitle": "Donani tanlang: taxtada u boradigan kataklar ko'rsatiladi.",
+      "tabs": "Shaxmat donalari",
+      "value": "{{count}} ochko",
+      "priceless": "Bebaho",
+      "tip": "Maslahat",
+      "lesson": "«{{piece}}» darsini ochish",
+      "boardLabel": "«{{piece}}» qanday yurishini ko'rsatuvchi taxta",
+      "k": {
+        "name": "Shoh",
+        "moves": "Istalgan tomonga bir katak yuradi: to'g'riga ham, qiyasiga ham. Shohni hech qachon hujum ostida qoldirib bo'lmaydi — butun o'yin uni himoya qilish atrofida quriladi.",
+        "tip": "Endshpilda shoh kuchli dona: uni markazga olib chiqing."
+      },
+      "q": {
+        "name": "Farzin",
+        "moves": "Eng kuchli dona: to'g'ri chiziq va diagonal bo'ylab istalgan masofaga yuradi. Ruh va filning kuchi bitta donada.",
+        "tip": "Farzinni o'yin boshida juda erta chiqarmang — raqib uni quvib, vaqt yutadi."
+      },
+      "r": {
+        "name": "Ruh",
+        "moves": "Vertikal va gorizontal bo'ylab istalgan masofaga yuradi, lekin donalar ustidan sakramaydi.",
+        "tip": "Ruhlar ochiq vertikalda va yettinchi qatorda eng kuchli."
+      },
+      "b": {
+        "name": "Fil",
+        "moves": "Faqat diagonal bo'ylab yuradi, shuning uchun doim bir xil rangdagi kataklarda qoladi.",
+        "tip": "Ikki fil birga ishlasa, butun taxtani nazorat qiladi."
+      },
+      "n": {
+        "name": "Ot",
+        "moves": "«G» harfi shaklida yuradi: bir tomonga ikki katak, keyin yonga bir katak. Donalar ustidan sakray oladigan yagona dona.",
+        "tip": "Ot markazda kuchli: taxta chetida uning yurishlari kamayadi."
+      },
+      "p": {
+        "name": "Piyoda",
+        "moves": "Oldinga bir katak yuradi, birinchi yurishida esa ikki katak ham yurishi mumkin. Raqib donasini qiyasiga oldinga bir katak yurib uradi.",
+        "tip": "Oxirgi qatorga yetgan piyoda istalgan donaga, odatda farzinga, aylanadi."
+      }
+    },
+    "special": {
+      "eyebrow": "Qoidalar",
+      "title": "Maxsus yurishlar",
+      "subtitle": "Ko'p yangi boshlovchilar bilmaydigan uchta qoida.",
+      "lesson": "Darsni ochish",
+      "castling": {
+        "title": "Rokirovka",
+        "text": "Shoh ruh tomonga ikki katak yuradi, ruh esa shohning ustidan o'tib, uning yoniga turadi. Ikkalasi ham hali yurmagan bo'lishi, shoh esa hujum ostida bo'lmasligi va hujumdagi katakdan o'tmasligi kerak."
+      },
+      "enPassant": {
+        "title": "Yo'lda urish",
+        "text": "Piyoda ikki katak yurib, raqib piyodasining yonida to'xtasa, raqib uni xuddi bir katak yurgandek urishi mumkin — faqat darhol keyingi yurishda."
+      },
+      "promotion": {
+        "title": "Piyoda aylanishi",
+        "text": "Oxirgi qatorga yetgan piyoda farzin, ruh, fil yoki otga aylanadi. Ko'pincha farzin tanlanadi."
+      }
+    },
+    "facts": {
+      "eyebrow": "Qiziqarli faktlar",
+      "title": "Bilasizmi?",
+      "afrasiab": {
+        "value": "VII–VIII asr",
+        "text": "Samarqanddagi Afrosiyobdan topilgan fil suyagidan yasalgan shaxmat donalari dunyodagi eng qadimiylaridan biri hisoblanadi."
+      },
+      "timur": {
+        "value": "11 × 10",
+        "text": "Amir Temur nomi bilan bog'liq «Temur shaxmati» 11 × 10 katakli taxtada tuya, jirafa va boshqa qo'shimcha donalar bilan o'ynalgan."
+      },
+      "shannon": {
+        "value": "10¹²⁰",
+        "text": "Klod Shennon hisobiga ko'ra, mumkin bo'lgan partiyalar soni taxminan 10¹²⁰ — bu koinotdagi atomlar sonidan ancha ko'p."
+      }
+    },
+    "cta": {
+      "title": "Birinchi yurishingizni bugun qiling",
+      "text": "Ro'yxatdan o'tmasdan boshlang. Birinchi dars bor-yo'g'i bir necha daqiqa oladi."
+    }
   },
   "auth": {
     "email": "Email",
@@ -417,5 +540,8 @@
       "send": "Yuborish",
       "tooFast": "Biroz sekinroq yozing."
     }
+  },
+  "footer": {
+    "credits": "Masalalar: Lichess (CC0). Bot: Stockfish (GPL-3.0)."
   }
 }

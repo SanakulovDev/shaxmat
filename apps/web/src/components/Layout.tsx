@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Link, NavLink, Outlet } from 'react-router'
+import { Link, NavLink, Outlet, useMatch } from 'react-router'
 import { useAuth } from '../auth/store'
 import { IncomingChallenges } from '../features/play/IncomingChallenges'
 import { RealtimeBridge } from '../realtime/socket'
@@ -15,9 +15,15 @@ const SECTIONS = [
 export function Layout() {
   const { t } = useTranslation()
   const { user, logout } = useAuth()
+  // The home page opens on a dark hero, so its header is dark too and the
+  // page runs full width.
+  const isHome = useMatch('/') !== null
+  const quiet = isHome
+    ? 'text-board-light/75 hover:bg-white/10 hover:text-white'
+    : 'text-muted hover:bg-paper'
 
   return (
-    <div className="min-h-screen">
+    <div className="flex min-h-screen flex-col">
       <RealtimeBridge />
       <a
         href="#main"
@@ -25,7 +31,13 @@ export function Layout() {
       >
         {t('nav.skipToContent')}
       </a>
-      <header className="border-b border-line bg-surface">
+      <header
+        className={
+          isHome
+            ? 'border-b border-white/10 bg-forest text-board-light'
+            : 'border-b border-line bg-surface'
+        }
+      >
         <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-2 px-4 py-3">
           <Link to="/" className="flex items-center gap-2 text-lg font-bold">
             <img src="/favicon.svg" alt="" className="h-7 w-7" />
@@ -41,9 +53,7 @@ export function Layout() {
                 to={to}
                 className={({ isActive }) =>
                   `whitespace-nowrap rounded-md px-3 py-1.5 font-medium ${
-                    isActive
-                      ? 'bg-paper text-ink'
-                      : 'text-muted hover:bg-paper'
+                    isActive ? (isHome ? 'bg-white/10 text-white' : 'bg-paper text-ink') : quiet
                   }`
                 }
               >
@@ -52,11 +62,11 @@ export function Layout() {
             ))}
           </nav>
           <div className="ml-auto flex items-center gap-2 text-sm">
-            <LanguageSwitcher />
+            <LanguageSwitcher dark={isHome} />
             {user && (
               <Link
                 to="/profile"
-                className="rounded-md px-3 py-1.5 font-medium hover:bg-paper"
+                className={`rounded-md px-3 py-1.5 font-medium ${isHome ? 'hover:bg-white/10' : 'hover:bg-paper'}`}
               >
                 {user.isGuest ? t('nav.guest') : user.name}
               </Link>
@@ -65,7 +75,7 @@ export function Layout() {
               <button
                 type="button"
                 onClick={() => void logout()}
-                className="rounded-md px-3 py-1.5 text-muted hover:bg-paper"
+                className={`rounded-md px-3 py-1.5 ${quiet}`}
               >
                 {t('nav.logout')}
               </button>
@@ -73,13 +83,15 @@ export function Layout() {
               <>
                 <Link
                   to="/login"
-                  className="rounded-md px-3 py-1.5 text-muted hover:bg-paper"
+                  className={`rounded-md px-3 py-1.5 ${quiet}`}
                 >
                   {t('nav.login')}
                 </Link>
                 <Link
                   to="/register"
-                  className="rounded-md bg-board-dark px-3 py-1.5 font-medium text-white hover:opacity-90"
+                  className={`rounded-md px-3 py-1.5 font-medium hover:opacity-90 ${
+                    isHome ? 'bg-accent text-ink' : 'bg-board-dark text-white'
+                  }`}
                 >
                   {t('nav.register')}
                 </Link>
@@ -90,17 +102,32 @@ export function Layout() {
       </header>
       {user && <IncomingChallenges />}
       {user?.isGuest && (
-        <p className="bg-amber-50 px-4 py-2 text-center text-sm text-amber-900">
+        <p
+          className={`px-4 py-2 text-center text-sm ${
+            isHome
+              ? 'border-b border-white/10 bg-forest-soft text-board-light/85'
+              : 'bg-amber-50 text-amber-900'
+          }`}
+        >
           {t('home.guestNote')}
         </p>
       )}
       <main
         id="main"
         tabIndex={-1}
-        className="mx-auto max-w-6xl px-4 py-8 outline-none"
+        className={`flex-1 outline-none ${isHome ? '' : 'mx-auto w-full max-w-6xl px-4 py-8'}`}
       >
         <Outlet />
       </main>
+      <footer className="border-t border-line bg-surface">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-4 py-6 text-sm text-muted">
+          <p className="flex items-center gap-2">
+            <img src="/favicon.svg" alt="" className="h-5 w-5" />© {new Date().getFullYear()}{' '}
+            {t('app.name')}
+          </p>
+          <p>{t('footer.credits')}</p>
+        </div>
+      </footer>
     </div>
   )
 }

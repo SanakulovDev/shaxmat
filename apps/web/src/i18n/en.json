@@ -1,7 +1,6 @@
 {
   "app": {
-    "name": "Shaxmat",
-    "tagline": "Learn chess from zero to professional level"
+    "name": "ChessLive"
   },
   "nav": {
     "login": "Log in",
@@ -32,7 +31,136 @@
     "puzzleRating": "Your rating: {{rating}}",
     "nextBot": "Next opponent: {{name}}, level {{level}}",
     "path": "Learning path",
-    "courseProgress": "Course progress"
+    "courseProgress": "Course progress",
+    "pathEyebrow": "Roadmap",
+    "pathSubtitle": "Step by step from the basics to professional level, with an exam at the end of each stage.",
+    "hero": {
+      "badge": "Free · in Uzbek, Russian and English",
+      "title": "Learn chess from zero <gold>to mastery</gold>",
+      "lede": "Short interactive lessons, a bot with {{levels}} levels, puzzles from real games and live games with friends, all in one place.",
+      "start": "Start for free",
+      "playBot": "Play the bot",
+      "gameTitle": "The Opera Game",
+      "gameMeta": "Paul Morphy · Paris, 1858",
+      "gameLabel": "Board replaying Paul Morphy's famous Opera Game of 1858",
+      "play": "Resume",
+      "pause": "Pause"
+    },
+    "stats": {
+      "lessons_one": "lesson",
+      "lessons_other": "lessons",
+      "bots_one": "bot level",
+      "bots_other": "bot levels",
+      "puzzles_one": "puzzle",
+      "puzzles_other": "puzzles",
+      "languages_one": "language",
+      "languages_other": "languages"
+    },
+    "features": {
+      "eyebrow": "Features",
+      "title": "Everything you need to learn",
+      "subtitle": "From your first move to your first win, at your own pace.",
+      "lessons": {
+        "title": "Interactive lessons",
+        "text": "Learn the rules on the board: every lesson has a short explanation and exercises.",
+        "link": "Go to lessons"
+      },
+      "bot": {
+        "title": "A bot with {{levels}} levels",
+        "text": "From beginner to professional. Pick an opponent at your level and climb step by step.",
+        "link": "Play"
+      },
+      "puzzles": {
+        "title": "Tactics puzzles",
+        "text": "Puzzles from real games. Every solve moves your rating.",
+        "link": "Solve puzzles"
+      },
+      "friends": {
+        "title": "Play with friends",
+        "text": "Send a link and play with a live clock. No sign-up needed.",
+        "link": "Invite a friend"
+      }
+    },
+    "pieces": {
+      "eyebrow": "The pieces",
+      "title": "How do the pieces move?",
+      "subtitle": "Pick a piece to see the squares it can reach.",
+      "tabs": "Chess pieces",
+      "value_one": "{{count}} point",
+      "value_other": "{{count}} points",
+      "priceless": "Priceless",
+      "tip": "Tip",
+      "lesson": "Open the {{piece}} lesson",
+      "boardLabel": "Board showing how the {{piece}} moves",
+      "k": {
+        "name": "King",
+        "moves": "Moves one square in any direction, straight or diagonal. The king may never be left under attack; the whole game is about protecting it.",
+        "tip": "In the endgame the king is a strong piece: bring it to the centre."
+      },
+      "q": {
+        "name": "Queen",
+        "moves": "The strongest piece: moves any distance along ranks, files and diagonals. A rook and a bishop in one.",
+        "tip": "Don't bring the queen out too early; your opponent gains time by chasing it."
+      },
+      "r": {
+        "name": "Rook",
+        "moves": "Moves any distance along ranks and files, but cannot jump over pieces.",
+        "tip": "Rooks are strongest on open files and on the seventh rank."
+      },
+      "b": {
+        "name": "Bishop",
+        "moves": "Moves only diagonally, so it always stays on squares of one colour.",
+        "tip": "Two bishops working together cover the whole board."
+      },
+      "n": {
+        "name": "Knight",
+        "moves": "Moves in an L shape: two squares one way, then one to the side. The only piece that can jump over others.",
+        "tip": "A knight is strong in the centre; on the edge it has fewer moves."
+      },
+      "p": {
+        "name": "Pawn",
+        "moves": "Moves one square forward, or two from its starting square. It captures one square diagonally forward.",
+        "tip": "A pawn that reaches the last rank turns into any piece, usually a queen."
+      }
+    },
+    "special": {
+      "eyebrow": "Rules",
+      "title": "Special moves",
+      "subtitle": "Three rules many beginners don't know.",
+      "lesson": "Open the lesson",
+      "castling": {
+        "title": "Castling",
+        "text": "The king moves two squares towards a rook, and the rook crosses over to stand beside it. Neither may have moved yet, and the king may not be in check or pass through an attacked square."
+      },
+      "enPassant": {
+        "title": "En passant",
+        "text": "When a pawn moves two squares and lands beside an enemy pawn, that pawn may capture it as if it had moved one, but only on the very next move."
+      },
+      "promotion": {
+        "title": "Promotion",
+        "text": "A pawn that reaches the last rank becomes a queen, rook, bishop or knight. Most players pick the queen."
+      }
+    },
+    "facts": {
+      "eyebrow": "Fun facts",
+      "title": "Did you know?",
+      "afrasiab": {
+        "value": "7th–8th c.",
+        "text": "Ivory chess pieces found at Afrasiab in Samarkand are among the oldest known in the world."
+      },
+      "timur": {
+        "value": "11 × 10",
+        "text": "“Tamerlane chess”, linked to the name of Amir Timur, was played on an 11 × 10 board with camels, giraffes and other extra pieces."
+      },
+      "shannon": {
+        "value": "10¹²⁰",
+        "text": "Claude Shannon estimated about 10¹²⁰ possible games, far more than there are atoms in the universe."
+      }
+    },
+    "cta": {
+      "title": "Make your first move today",
+      "text": "Start without signing up. The first lesson takes just a few minutes."
+    }
   },
   "auth": {
     "email": "Email",
@@ -419,5 +547,8 @@
       "send": "Send",
       "tooFast": "Please slow down a little."
     }
+  },
+  "footer": {
+    "credits": "Puzzles: Lichess (CC0). Bot: Stockfish (GPL-3.0)."
   }
 }
