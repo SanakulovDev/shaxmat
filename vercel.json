@@ -2,6 +2,12 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "installCommand": "pnpm install --frozen-lockfile --production=false",
   "buildCommand": "pnpm run vercel-build",
+  "git": {
+    "deploymentEnabled": {
+      "**": false,
+      "main": true
+    }
+  },
   "outputDirectory": "apps/web/dist",
   "regions": [
     "fra1"

@@ -55,7 +55,7 @@ Bitta Vercel loyihasi: veb-ilova statik fayl sifatida (`apps/web/dist`), API esa
 
 - Baza: Neon (Vercel Storage). Vercel `DATABASE_URL` (pooler) va `DATABASE_URL_UNPOOLED` (to'g'ridan-to'g'ri ulanish) ni o'zi qo'shadi. Production build'da `prisma migrate deploy` ishlaydi.
 - Qo'shimcha env: `JWT_ACCESS_SECRET` (`openssl rand -base64 48`), `ENABLE_EXPERIMENTAL_COREPACK=1` (pnpm 11 uchun), `NODE_ENV=production`.
-- Deploy: `vercel deploy --prod` (CLI `.vercelignore` bo'yicha faqat manba kodni yuklaydi).
+- Deploy: loyiha GitHub'ga ulangan, `main` ga push production'ni yangilaydi. Boshqa branch'lar deploy qilinmaydi (`vercel.json` dagi `git.deploymentEnabled`), chunki preview va production bitta bazadan foydalanadi. Shu sababli qo'lda ham faqat `vercel deploy --prod` ishlating (CLI `.vercelignore` bo'yicha faqat manba kodni yuklaydi).
 - Real vaqt: Socket.IO faqat WebSocket orqali. Har bir function instance o'z ulanishlarini ushlab turadi, shuning uchun xabarlar instance'lar orasida Postgres LISTEN/NOTIFY (`@socket.io/postgres-adapter`) orqali uzatiladi. Onlayn holat va chat bazada saqlanadi. Ulanish function vaqt limitida (300 s) uziladi va client o'zi qayta ulanadi.
 - Masalalarni production bazaga yuklash: `DATABASE_URL=... pnpm --filter api puzzles:import`.
 
