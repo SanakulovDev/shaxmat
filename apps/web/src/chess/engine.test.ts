@@ -10,6 +10,9 @@ describe('parseInfoLine', () => {
       multipv: 2,
       move: 'd7d5',
       scoreCp: -35,
+      mate: null,
+      depth: 10,
+      pv: ['d7d5', 'e4d5', 'd8d5'],
     })
   })
 
@@ -19,6 +22,9 @@ describe('parseInfoLine', () => {
       multipv: 1,
       move: 'h5f7',
       scoreCp: mateToCp(2),
+      mate: 2,
+      depth: 5,
+      pv: ['h5f7', 'e8e7', 'd1d8'],
     })
   })
 

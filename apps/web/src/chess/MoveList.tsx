@@ -3,24 +3,43 @@ import { useEffect, useRef } from 'react'
 
 type Cell = { san: string; ply: number }
 
+// A mark after a move, like "??" for a blunder. `label` is read out instead
+// of the symbol.
+export type MoveNote = { symbol: string; label: string; className: string }
+
 // Moves in pairs: "1. e4 e5", "2. Nf3 ...". With `onSelect`, each move is a
 // button that shows the position after it; `current` is the shown ply.
+// `notes[i]` marks move i + 1.
 export function MoveList({
   moves,
   label,
   current,
   onSelect,
+  notes,
 }: {
   moves: Move[]
   label: string
   current?: number
   onSelect?: (ply: number) => void
+  notes?: readonly (MoveNote | null | undefined)[]
 }) {
-  const endRef = useRef<HTMLLIElement>(null)
+  const listRef = useRef<HTMLOListElement>(null)
 
+  // Keeps the shown move (or the newest one) in view. Only the list
+  // scrolls: scrollIntoView would also scroll the page to it.
   useEffect(() => {
-    endRef.current?.scrollIntoView({ block: 'nearest' })
-  }, [moves.length])
+    const list = listRef.current
+    if (!list) return
+    const shown = list.querySelector<HTMLElement>('[aria-current="step"]')
+    if (!shown) {
+      list.scrollTop = list.scrollHeight
+      return
+    }
+    const top = shown.offsetTop
+    const bottom = top + shown.offsetHeight
+    if (top < list.scrollTop) list.scrollTop = top
+    else if (bottom > list.scrollTop + list.clientHeight) list.scrollTop = bottom - list.clientHeight
+  }, [moves.length, current])
 
   const rows: { number: number; white?: Cell; black?: Cell }[] = []
   for (const [index, move] of moves.entries()) {
@@ -33,9 +52,29 @@ export function MoveList({
     }
   }
 
+  function renderNote(ply: number) {
+    const note = notes?.[ply - 1]
+    if (!note) return null
+    return (
+      <>
+        <span aria-hidden className={`ml-0.5 font-bold ${note.className}`}>
+          {note.symbol}
+        </span>
+        <span className="sr-only"> ({note.label})</span>
+      </>
+    )
+  }
+
   function renderCell(cell: Cell | undefined, placeholder: string) {
     if (!cell) return <span className="font-medium">{placeholder}</span>
-    if (!onSelect) return <span className="font-medium">{cell.san}</span>
+    if (!onSelect) {
+      return (
+        <span className="font-medium">
+          {cell.san}
+          {renderNote(cell.ply)}
+        </span>
+      )
+    }
     const selected = cell.ply === current
     return (
       <button
@@ -47,14 +86,16 @@ export function MoveList({
         }`}
       >
         {cell.san}
+        {renderNote(cell.ply)}
       </button>
     )
   }
 
   return (
     <ol
+      ref={listRef}
       aria-label={label}
-      className="max-h-64 overflow-y-auto rounded-lg border border-line bg-surface text-sm"
+      className="relative max-h-64 overflow-y-auto rounded-lg border border-line bg-surface text-sm"
     >
       {rows.map((row) => (
         <li
@@ -66,7 +107,6 @@ export function MoveList({
           <span>{renderCell(row.black, '')}</span>
         </li>
       ))}
-      <li ref={endRef} aria-hidden />
     </ol>
   )
 }

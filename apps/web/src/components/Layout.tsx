@@ -10,6 +10,7 @@ const SECTIONS = [
   { to: '/bot', key: 'nav.bot' },
   { to: '/puzzles', key: 'nav.puzzles' },
   { to: '/play', key: 'nav.play' },
+  { to: '/games', key: 'nav.games' },
 ] as const
 
 export function Layout() {

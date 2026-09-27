@@ -66,6 +66,36 @@ export const router = createBrowserRouter([
         }),
       },
       {
+        path: '/games',
+        lazy: async () => ({
+          Component: (await import('./features/games/GamesPage')).GamesPage,
+        }),
+      },
+      {
+        path: '/games/live/:roundId',
+        lazy: async () => ({
+          Component: (await import('./features/games/RoundPage')).RoundPage,
+        }),
+      },
+      {
+        path: '/games/live/:roundId/:gameId',
+        lazy: async () => ({
+          Component: (await import('./features/games/GameAnalysisPage')).BroadcastGamePage,
+        }),
+      },
+      {
+        path: '/games/classic/:id',
+        lazy: async () => ({
+          Component: (await import('./features/games/GameAnalysisPage')).ClassicGamePage,
+        }),
+      },
+      {
+        path: '/games/tour/:tourId',
+        lazy: async () => ({
+          Component: (await import('./features/games/RoundPage')).TourRedirect,
+        }),
+      },
+      {
         path: '/profile',
         lazy: async () => ({
           Component: (await import('./features/profile/ProfilePage')).ProfilePage,

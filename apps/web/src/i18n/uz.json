@@ -12,7 +12,8 @@
     "skipToContent": "Asosiy mazmunga o'tish",
     "main": "Asosiy menyu",
     "guest": "Mehmon",
-    "play": "Do'stlar bilan"
+    "play": "Do'stlar bilan",
+    "games": "Partiyalar"
   },
   "home": {
     "friends": {
@@ -539,6 +540,128 @@
       "message": "Xabar",
       "send": "Yuborish",
       "tooFast": "Biroz sekinroq yozing."
+    }
+  },
+  "games": {
+    "title": "Katta partiyalar",
+    "subtitle": "Dunyo turnirlarini jonli kuzating va istalgan partiyani Stockfish bilan tahlil qiling: kim ustun, qanchalik ustun va qaysi yurish xato bo'ldi.",
+    "live": {
+      "title": "Hozir jonli",
+      "source": "Ma'lumotlar:",
+      "none": "Hozir jonli turnir yo'q. Klassik partiyalarni ko'rib chiqing.",
+      "more": "Yana {{count}} ta turnir",
+      "fewer": "Kamroq ko'rsatish",
+      "now": "Jonli",
+      "startsAt": "Soat {{time}} da boshlanadi",
+      "topBoards": "Yetakchi taxtalar",
+      "allGames": "Barcha partiyalar"
+    },
+    "loadError": "Lichess'dan ma'lumot olib bo'lmadi.",
+    "retry": "Qayta urinish",
+    "round": "{{number}}-tur",
+    "rounds": "Turlar",
+    "sections": "Turnir bo'limlari",
+    "backToEvents": "Barcha partiyalar",
+    "roundLive": "{{total}} ta partiyadan {{count}} tasi davom etmoqda",
+    "roundFinished": "Tur tugadi: {{count}} ta partiya",
+    "roundUpcoming": "Tur hali boshlanmagan.",
+    "filter": "O'yinchi yoki jamoa",
+    "filterHint": "Masalan, Abdusattorov",
+    "noGames": "Partiya topilmadi.",
+    "moreGames": "Yana {{count}} ta partiyani ko'rsatish",
+    "gameLabel": "{{white}} (oq) – {{black}} (qora)",
+    "onLichess": "Lichess'da ochish",
+    "notFound": "Bunday partiya topilmadi.",
+    "classics": {
+      "heading": "Klassik partiyalar",
+      "subtitle": "Shaxmat tarixidagi eng mashhur partiyalar — har bir yurishni dvigatel bilan tekshiring.",
+      "samarkand": {
+        "title": "Samarqanddagi g'alaba",
+        "place": "Samarqand",
+        "story": "2026-yilgi Jahon shaxmat olimpiadasi. Nodirbek Abdusattorov o'z muxlislari oldida Fabiano Karuanani yutdi: qirol qanotidagi piyoda hujumi (f4–f5, g4–g5–g6) va 44.Rxg7+ zarbasi o'yinni hal qildi."
+      },
+      "opera": {
+        "title": "Opera partiyasi",
+        "place": "Parij",
+        "story": "Pol Morfi Parij operasida, spektakl paytida ikki zodagonga qarshi o'ynadi. Tez rivojlanish, ochiq chiziqlar va 16-yurishda farzin qurbonligi — 17-yurishda ladya bilan mat. Debyut qoidalarining eng yaxshi darsi."
+      },
+      "immortal": {
+        "title": "O'lmas partiya",
+        "place": "London",
+        "story": "Adolf Anderssen fil, ikkala ladya va farzinini qurbon qildi, so'ng qolgan yengil donalar bilan mat qo'ydi. Bu partiya romantik shaxmatning ramziga aylandi."
+      },
+      "evergreen": {
+        "title": "Doim yashil partiya",
+        "place": "Berlin",
+        "story": "Anderssen yana hujum ustaligini ko'rsatdi: 20.Rxe7+ va 21.Qxd7+!! farzin qurbonligidan keyin fillar mat qo'ydi. Nomini Vilgelm Steynits bergan — bu partiya hech qachon eskirmaydi."
+      },
+      "century": {
+        "title": "Asr partiyasi",
+        "place": "Nyu-York",
+        "story": "13 yoshli Bobbi Fisher kuchli usta Donald Byrnga qarshi 17...Be6!! yurishi bilan farzinini qurbon qildi. Evaziga ko'p dona oldi va 41-yurishda mat qo'ydi."
+      },
+      "kasparovTopalov": {
+        "title": "Kasparovning o'lmas partiyasi",
+        "place": "Veyk-an-Zee",
+        "story": "Kasparov 24.Rxd4!! bilan ladyani qurbon qildi va qora qirolni butun taxta bo'ylab quvdi. Ko'pchilik buni uning eng go'zal partiyasi deb biladi."
+      },
+      "deepBlue": {
+        "title": "Deep Blue Kasparovni yutdi",
+        "place": "Nyu-York",
+        "story": "1997-yilgi revansh matchining hal qiluvchi 6-partiyasi. IBM kompyuteri Deep Blue 8.Nxe6 qurbonligidan keyin atigi 19 yurishda yutdi — kompyuter birinchi marta amaldagi jahon chempionini matchda yengdi."
+      },
+      "reti": {
+        "title": "O'n bir yurishlik mo''jiza",
+        "place": "Vena",
+        "story": "Karo-Kann himoyasida Tartakover shoshildi, Reti esa 9.Qd8+!! bilan farzinini qurbon qildi. Ikki yurishdan keyin fil mat qo'ydi — hammasi 11 yurish."
+      }
+    },
+    "analysis": {
+      "evaluation": "Baho",
+      "thinking": "Hisoblanmoqda…",
+      "sideline": "Sizning variantingiz",
+      "backToGame": "Partiyaga qaytish",
+      "graph": "Baho grafigi",
+      "moves": "Yurishlar",
+      "noMoves": "Hali yurish qilinmagan.",
+      "flip": "Taxtani aylantirish",
+      "judgement": {
+        "inaccuracy": "noaniqlik",
+        "mistake": "xato",
+        "blunder": "qo'pol xato"
+      },
+      "judgements": {
+        "inaccuracy": "Noaniqliklar",
+        "mistake": "Xatolar",
+        "blunder": "Qo'pol xatolar"
+      },
+      "materialUp": "{{count}} ochko ustun",
+      "clock": "Vaqt",
+      "sides": {
+        "w": "Oqlar",
+        "b": "Qoralar"
+      },
+      "checkmate": "Mat! {{side}} yutdi.",
+      "drawn": "Durang: partiya tugadi.",
+      "mateIn": "{{side}} {{count}} yurishda mat qiladi",
+      "level": {
+        "equal": "Pozitsiya teng",
+        "slight": "{{side}} biroz ustun",
+        "clear": "{{side}} aniq ustun",
+        "winning": "{{side}} yutish arafasida"
+      },
+      "situation": "Vaziyat",
+      "depth": "Chuqurlik {{depth}}",
+      "pawns": "Ustunlik ≈ {{value}} piyoda",
+      "chances": "G'alaba imkoniyati",
+      "better": "Yaxshiroq edi: {{move}}.",
+      "lines": "Eng yaxshi davomlar",
+      "showBest": "Eng yaxshi yurishni strelka bilan ko'rsatish",
+      "review": "Partiya tahlili",
+      "reviewing": "Har bir yurish tekshirilmoqda… {{percent}}%",
+      "measure": "Ko'rsatkich",
+      "accuracy": "Aniqlik",
+      "reviewNote": "Stockfish brauzeringizda ishlaydi. Aniqlik Lichess formulasi bo'yicha hisoblanadi."
     }
   },
   "footer": {

@@ -8,14 +8,30 @@ export type SearchOptions = {
   skillLevel?: number
   // Enables UCI_LimitStrength with this rating (1320-3190).
   elo?: number
+  // Called with the best lines each time a search depth is complete.
+  onUpdate?: (lines: EngineLine[]) => void
 }
 
-export type SearchResult = { bestMove: string; candidates: Candidate[] }
+// One line of play the engine considers, best first.
+export type EngineLine = {
+  move: string
+  scoreCp: number
+  // Moves to mate (negative when the side to move is mated), else null.
+  mate: number | null
+  depth: number
+  pv: string[]
+}
 
-type InfoLine = { multipv: number; move: string; scoreCp: number }
+export type SearchResult = {
+  bestMove: string
+  candidates: Candidate[]
+  lines: EngineLine[]
+}
 
-// Parses a UCI "info ... multipv N score (cp X | mate Y) ... pv m1 m2 ..."
-// line. Scores are from the side to move's point of view.
+type InfoLine = EngineLine & { multipv: number }
+
+// Parses a UCI "info depth D ... multipv N score (cp X | mate Y) ... pv m1
+// m2 ..." line. Scores are from the side to move's point of view.
 export function parseInfoLine(line: string): InfoLine | null {
   const tokens = line.split(' ')
   if (tokens[0] !== 'info') return null
@@ -30,8 +46,12 @@ export function parseInfoLine(line: string): InfoLine | null {
 
   const multipvIndex = tokens.indexOf('multipv')
   const multipv = multipvIndex === -1 ? 1 : Number(tokens[multipvIndex + 1])
-  const scoreCp = kind === 'mate' ? mateToCp(value) : value
-  return { multipv, move, scoreCp }
+  const depthIndex = tokens.indexOf('depth')
+  const depth = depthIndex === -1 ? 0 : Number(tokens[depthIndex + 1])
+  const mate = kind === 'mate' ? value : null
+  const scoreCp = mate === null ? value : mateToCp(mate)
+  const pv = tokens.slice(pvIndex + 1).filter((token) => token !== '')
+  return { multipv, move, scoreCp, mate, depth, pv }
 }
 
 const ENGINE_URL = '/stockfish/stockfish-19-lite-single.js'
@@ -90,19 +110,31 @@ export class Engine {
 
     return new Promise<SearchResult>((resolve) => {
       // Later lines (deeper search) replace earlier ones for the same rank.
-      const byRank = new Map<number, Candidate>()
+      const byRank = new Map<number, EngineLine>()
+      const ranked = () =>
+        [...byRank.entries()].sort(([a], [b]) => a - b).map(([, entry]) => entry)
+      let depth = 0
       this.onLine = (line) => {
         const info = parseInfoLine(line)
         if (info) {
-          byRank.set(info.multipv, { move: info.move, scoreCp: info.scoreCp })
+          const { multipv, ...entry } = info
+          // A new depth starts with its best line, so the lines so far are
+          // a finished depth.
+          if (multipv === 1 && entry.depth > depth) {
+            if (byRank.size > 0) options.onUpdate?.(ranked())
+            depth = entry.depth
+          }
+          byRank.set(multipv, entry)
           return
         }
         if (line.startsWith('bestmove')) {
           this.onLine = null
-          const candidates = [...byRank.entries()]
-            .sort(([a], [b]) => a - b)
-            .map(([, candidate]) => candidate)
-          resolve({ bestMove: line.split(' ')[1] ?? '', candidates })
+          const lines = ranked()
+          resolve({
+            bestMove: line.split(' ')[1] ?? '',
+            candidates: lines.map(({ move, scoreCp }) => ({ move, scoreCp })),
+            lines,
+          })
         }
       }
       send(

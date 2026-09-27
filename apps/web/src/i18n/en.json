@@ -12,7 +12,8 @@
     "skipToContent": "Skip to content",
     "main": "Main menu",
     "guest": "Guest",
-    "play": "Play a friend"
+    "play": "Play a friend",
+    "games": "Games"
   },
   "home": {
     "friends": {
@@ -546,6 +547,134 @@
       "message": "Message",
       "send": "Send",
       "tooFast": "Please slow down a little."
+    }
+  },
+  "games": {
+    "title": "Big games",
+    "subtitle": "Follow top tournaments live and analyse any game with Stockfish: who is better, by how much, and which move went wrong.",
+    "live": {
+      "title": "Live now",
+      "source": "Data:",
+      "none": "No tournaments are live right now. Have a look at the classics.",
+      "more_one": "{{count}} more event",
+      "more_other": "{{count}} more events",
+      "fewer": "Show fewer",
+      "now": "Live",
+      "startsAt": "Starts at {{time}}",
+      "topBoards": "Top boards",
+      "allGames": "All games"
+    },
+    "loadError": "Couldn't load data from Lichess.",
+    "retry": "Try again",
+    "round": "Round {{number}}",
+    "rounds": "Rounds",
+    "sections": "Event sections",
+    "backToEvents": "All games",
+    "roundLive_one": "{{count}} of {{total}} games in progress",
+    "roundLive_other": "{{count}} of {{total}} games in progress",
+    "roundFinished_one": "Round over: {{count}} game",
+    "roundFinished_other": "Round over: {{count}} games",
+    "roundUpcoming": "The round hasn't started yet.",
+    "filter": "Player or team",
+    "filterHint": "e.g. Abdusattorov",
+    "noGames": "No games found.",
+    "moreGames_one": "Show {{count}} more game",
+    "moreGames_other": "Show {{count}} more games",
+    "gameLabel": "{{white}} (White) vs {{black}} (Black)",
+    "onLichess": "Open on Lichess",
+    "notFound": "Game not found.",
+    "classics": {
+      "heading": "Classic games",
+      "subtitle": "The most famous games in chess history — check every move with the engine.",
+      "samarkand": {
+        "title": "Victory in Samarkand",
+        "place": "Samarkand",
+        "story": "The 2026 Chess Olympiad. In front of a home crowd, Nodirbek Abdusattorov beat Fabiano Caruana: a kingside pawn storm (f4–f5, g4–g5–g6) and the blow 44.Rxg7+ decided the game."
+      },
+      "opera": {
+        "title": "The Opera Game",
+        "place": "Paris",
+        "story": "Paul Morphy played two noblemen during a performance at the Paris Opera. Fast development, open lines and a queen sacrifice on move 16 — mate with a rook on move 17. The best lesson in opening principles."
+      },
+      "immortal": {
+        "title": "The Immortal Game",
+        "place": "London",
+        "story": "Adolf Anderssen gave up a bishop, both rooks and his queen, then mated with his remaining minor pieces. The game became the symbol of romantic chess."
+      },
+      "evergreen": {
+        "title": "The Evergreen Game",
+        "place": "Berlin",
+        "story": "Anderssen's attacking genius again: after 20.Rxe7+ and the queen sacrifice 21.Qxd7+!! his bishops give mate. Wilhelm Steinitz named it — a game that never fades."
+      },
+      "century": {
+        "title": "The Game of the Century",
+        "place": "New York",
+        "story": "Thirteen-year-old Bobby Fischer gave up his queen with 17...Be6!! against the strong master Donald Byrne. He took plenty of material in return and mated on move 41."
+      },
+      "kasparovTopalov": {
+        "title": "Kasparov's Immortal",
+        "place": "Wijk aan Zee",
+        "story": "Kasparov sacrificed a rook with 24.Rxd4!! and chased Black's king across the whole board. Many call it the finest game of his career."
+      },
+      "deepBlue": {
+        "title": "Deep Blue beats Kasparov",
+        "place": "New York",
+        "story": "The deciding sixth game of the 1997 rematch. After the sacrifice 8.Nxe6, IBM's Deep Blue won in just 19 moves — the first time a computer beat a reigning world champion in a match."
+      },
+      "reti": {
+        "title": "An eleven-move miracle",
+        "place": "Vienna",
+        "story": "Tartakower rushed in the Caro-Kann, and Réti sacrificed his queen with 9.Qd8+!!. Two moves later a bishop gave mate — 11 moves in all."
+      }
+    },
+    "analysis": {
+      "evaluation": "Evaluation",
+      "thinking": "Thinking…",
+      "sideline": "Your line",
+      "backToGame": "Back to the game",
+      "graph": "Evaluation graph",
+      "moves": "Moves",
+      "noMoves": "No moves yet.",
+      "flip": "Flip the board",
+      "judgement": {
+        "inaccuracy": "inaccuracy",
+        "mistake": "mistake",
+        "blunder": "blunder"
+      },
+      "judgements": {
+        "inaccuracy": "Inaccuracies",
+        "mistake": "Mistakes",
+        "blunder": "Blunders"
+      },
+      "materialUp_one": "{{count}} point up",
+      "materialUp_other": "{{count}} points up",
+      "clock": "Clock",
+      "sides": {
+        "w": "White",
+        "b": "Black"
+      },
+      "checkmate": "Checkmate — {{side}} wins.",
+      "drawn": "Draw — the game is over.",
+      "mateIn_one": "{{side}} mates in {{count}} move",
+      "mateIn_other": "{{side}} mates in {{count}} moves",
+      "level": {
+        "equal": "The position is equal",
+        "slight": "{{side}} is slightly better",
+        "clear": "{{side}} is clearly better",
+        "winning": "{{side}} is winning"
+      },
+      "situation": "Position",
+      "depth": "Depth {{depth}}",
+      "pawns": "About {{value}} pawns ahead",
+      "chances": "Winning chances",
+      "better": "Better was {{move}}.",
+      "lines": "Best lines",
+      "showBest": "Show the best move as an arrow",
+      "review": "Game review",
+      "reviewing": "Checking every move… {{percent}}%",
+      "measure": "Measure",
+      "accuracy": "Accuracy",
+      "reviewNote": "Stockfish runs in your browser. Accuracy uses the Lichess formula."
     }
   },
   "footer": {
