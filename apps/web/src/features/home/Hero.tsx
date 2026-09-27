@@ -235,7 +235,7 @@ export function HeroLink({
   return (
     <Link
       to={to}
-      className={`group inline-flex items-center gap-2 rounded-xl px-6 py-3.5 font-semibold transition ${
+      className={`group inline-flex items-center gap-2 rounded-xl px-6 py-3.5 font-semibold transition active:scale-[0.97] ${
         primary
           ? 'bg-accent text-ink shadow-[0_10px_30px_-8px_rgb(224_165_38/0.6)] hover:-translate-y-0.5 hover:shadow-[0_16px_40px_-8px_rgb(224_165_38/0.7)]'
           : 'border border-board-light/25 bg-white/5 text-white hover:border-board-light/50 hover:bg-white/10'

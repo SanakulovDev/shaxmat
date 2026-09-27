@@ -1,6 +1,6 @@
 import { Chess } from 'chess.js'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import type { BoardMove } from '../../chess/Board'
+import type { BoardFlash, BoardMove } from '../../chess/Board'
 import { uciToMove } from '../../chess/uci'
 import type { Puzzle } from './api'
 import { isCorrectMove } from './solver'
@@ -26,6 +26,8 @@ export function usePuzzleSolver(
   // Index in puzzle.moves of the solver's next move.
   const [step, setStep] = useState(1)
   const [status, setStatus] = useState<SolverStatus>('intro')
+  // Lights the square of the solver's last move, green or red.
+  const [flash, setFlash] = useState<BoardFlash | null>(null)
   const reported = useRef(false)
   const timers = useRef<number[]>([])
 
@@ -81,6 +83,11 @@ export function usePuzzleSolver(
         isLastStep,
         givesMate: chess.isCheckmate(),
       })
+      setFlash((last) => ({
+        kind: correct ? 'good' : 'bad',
+        square: move.to,
+        id: (last?.id ?? 0) + 1,
+      }))
       if (!correct) {
         setStatus('wrong')
         report(false)
@@ -121,6 +128,7 @@ export function usePuzzleSolver(
     fen,
     lastMove,
     status,
+    flash,
     solverColor,
     playerMove,
     revealSolution,

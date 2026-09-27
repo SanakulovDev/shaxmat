@@ -55,9 +55,9 @@ export function QuizStepView({ step, onComplete }: StepProps<'quiz'>) {
               disabled={solved || isWrong}
               className={`rounded-lg border-2 px-4 py-3 text-left text-base font-medium transition ${
                 isAnswer
-                  ? 'border-green-600 bg-green-50'
+                  ? 'animate-pop-in border-green-600 bg-green-50'
                   : isWrong
-                    ? 'border-red-300 bg-red-50 text-red-800 line-through'
+                    ? 'animate-shake border-red-300 bg-red-50 text-red-800 line-through'
                     : 'border-line bg-surface hover:border-board-dark'
               }`}
             >

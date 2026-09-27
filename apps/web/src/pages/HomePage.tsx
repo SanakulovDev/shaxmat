@@ -247,7 +247,7 @@ function ProgressLine({ done, total }: { done: number; total: number }) {
         aria-valuenow={done}
       >
         <div
-          className="h-full rounded-full bg-accent"
+          className="h-full origin-left animate-[grow_900ms_cubic-bezier(0.2,0.7,0.2,1)_400ms_backwards] rounded-full bg-accent"
           style={{ width: `${(done / total) * 100}%` }}
         />
       </div>
@@ -277,7 +277,7 @@ function PracticeCard({
       >
         <span
           aria-hidden
-          className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-board-dark font-symbols text-2xl text-accent"
+          className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-board-dark font-symbols text-2xl text-accent transition-transform duration-300 group-hover:-rotate-12 group-hover:scale-110"
         >
           {glyph}
           {'︎'}

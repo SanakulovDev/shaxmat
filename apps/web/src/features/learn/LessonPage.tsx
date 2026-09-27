@@ -3,6 +3,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, Navigate, useParams } from 'react-router'
+import { Confetti } from '../../components/Confetti'
 import { NarrationControls } from './NarrationControls'
 import { narrateIfAutoplay, stopNarration } from './narration'
 import { completeLesson } from './progress'
@@ -68,8 +69,9 @@ function LessonPlayer({ slug }: { slug: string }) {
 
   if (finished) {
     return (
-      <div className="mx-auto max-w-md space-y-5 rounded-2xl border border-line bg-surface p-8 text-center">
-        <p className="text-5xl" aria-hidden>
+      <div className="relative mx-auto max-w-md animate-card-in space-y-5 rounded-2xl border border-line bg-surface p-8 text-center shadow-lg">
+        <Confetti />
+        <p className="animate-drop text-5xl [animation-delay:150ms]" aria-hidden>
           🎉
         </p>
         <h1
@@ -141,7 +143,10 @@ function LessonPlayer({ slug }: { slug: string }) {
         })}
         className="outline-none"
       >
-        <StepView key={index} step={step} onComplete={onComplete} />
+        {/* Each step slides in; the key also resets the step's state. */}
+        <div key={index} className="animate-card-in">
+          <StepView step={step} onComplete={onComplete} />
+        </div>
       </section>
 
       <div className="flex items-center justify-between border-t border-line pt-4">

@@ -7,6 +7,7 @@ import { ensureSession, useAuth } from '../../auth/store'
 import { Board } from '../../chess/Board'
 import { MoveList } from '../../chess/MoveList'
 import { replayUci } from '../../chess/uci'
+import { Confetti } from '../../components/Confetti'
 import { BOT_AVATARS } from '../bot/avatars'
 import {
   addFriend,
@@ -62,6 +63,9 @@ function LiveGame({
   const [viewPly, setViewPly] = useState<number | null>(null)
   const active = state?.status === 'active'
   const now = useServerNow(game.offset, active)
+  // Confetti is for a win seen as it happens, not for an old game reopened.
+  const [sawActive, setSawActive] = useState(false)
+  if (active && !sawActive) setSawActive(true)
 
   const moves = useMemo(
     () => (state ? (pendingMove ? [...state.moves, pendingMove] : state.moves) : []),
@@ -115,6 +119,8 @@ function LiveGame({
   const opponentSide: Side | null = mySide ? (mySide === 'w' ? 'b' : 'w') : null
   const canMove =
     active && mySide !== null && viewPly === null && !pendingMove && chess.turn() === mySide
+  const winner = state.result === '1-0' ? 'w' : state.result === '0-1' ? 'b' : null
+  const wonNow = sawActive && !active && mySide !== null && winner === mySide
 
   function clockOf(side: Side): number | null {
     if (!state?.clock) return null
@@ -131,7 +137,8 @@ function LiveGame({
 
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]">
-      <div className="mx-auto w-full max-w-[min(100%,calc(100dvh-14rem),36rem)]">
+      <div className="relative mx-auto w-full max-w-[min(100%,calc(100dvh-14rem),36rem)]">
+        {wonNow && <Confetti />}
         <PlayerBar
           state={state}
           side={topSide}
@@ -167,7 +174,9 @@ function LiveGame({
             </p>
           )}
           <p className="mt-3 font-semibold" aria-live="polite">
-            {statusText(t, state, mySide, chess.turn(), viewPly !== null)}
+            <span key={state.status} className="inline-block animate-pop-in">
+              {statusText(t, state, mySide, chess.turn(), viewPly !== null)}
+            </span>
           </p>
           {firstMoveSeconds !== null && (
             <p className="mt-1 text-sm text-muted">

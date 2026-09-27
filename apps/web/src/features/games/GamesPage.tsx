@@ -65,7 +65,7 @@ function LiveEvents() {
       ) : (
         <>
           {featured.length > 0 && (
-            <ul className={`grid grid-cols-1 gap-4 ${featured.length > 1 ? 'md:grid-cols-2' : ''}`}>
+            <ul className={`stagger grid grid-cols-1 gap-4 ${featured.length > 1 ? 'md:grid-cols-2' : ''}`}>
               {featured.map((entry) => (
                 <li key={entry.tour.id}>
                   <FeaturedEvent entry={entry} />
@@ -76,7 +76,7 @@ function LiveEvents() {
           {featured[0]?.round.ongoing && <TopBoards entry={featured[0]} />}
           {others.length > 0 && (
             <div className="space-y-3">
-              <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              <ul className="stagger grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
                 {shown.map((entry) => (
                   <li key={entry.tour.id}>
                     <EventCard entry={entry} />
@@ -123,7 +123,7 @@ function TopBoards({ entry }: { entry: TopEntry }) {
           {t('games.live.allGames')} →
         </Link>
       </div>
-      <ul className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+      <ul className="stagger grid grid-cols-2 gap-3 lg:grid-cols-4">
         {games.map((game) => (
           <li key={game.id}>
             <GameCard roundId={entry.round.id} game={game} fetchedAt={dataUpdatedAt} />
@@ -230,7 +230,7 @@ function Classics() {
         </h2>
         <p className="text-muted">{t('games.classics.subtitle')}</p>
       </div>
-      <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <ul className="stagger grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {CLASSICS.map((game) => {
           const fen = finals.get(game.id)
           return (

@@ -55,7 +55,7 @@ export function LearnPage() {
                 {t('learn.stageSoon')}
               </p>
             ) : (
-              <ol className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              <ol className="stagger grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                 {lessons.map((lesson, index) => {
                   const complete = done.has(lesson.slug)
                   const isNext = lesson.slug === next?.slug
@@ -64,7 +64,7 @@ export function LearnPage() {
                       <Link
                         to={`/learn/${lesson.slug}`}
                         aria-current={isNext ? 'step' : undefined}
-                        className={`flex h-full gap-3 rounded-xl border bg-surface p-4 hover:border-board-dark motion-safe:transition ${
+                        className={`flex h-full gap-3 rounded-xl border bg-surface p-4 hover:-translate-y-0.5 hover:border-board-dark hover:shadow-md motion-safe:transition ${
                           isNext ? 'border-lapis ring-2 ring-lapis/25' : 'border-line'
                         }`}
                       >

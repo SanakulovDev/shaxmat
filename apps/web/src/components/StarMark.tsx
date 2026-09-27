@@ -22,9 +22,16 @@ export function StarMark({
   children?: React.ReactNode
 }) {
   const { fill, stroke } = STYLES[state]
+  // The current step's star turns slowly, so the eye finds it.
   return (
     <span className={`relative inline-flex shrink-0 items-center justify-center ${className}`}>
-      <svg viewBox="-1.5 -1.5 27 27" className="absolute inset-0 h-full w-full" aria-hidden>
+      <svg
+        viewBox="-1.5 -1.5 27 27"
+        className={`absolute inset-0 h-full w-full ${
+          state === 'current' ? 'animate-[spin_16s_linear_infinite]' : ''
+        }`}
+        aria-hidden
+      >
         <polygon points={STAR_POINTS} fill={fill} stroke={stroke} strokeWidth="1.6" strokeLinejoin="round" />
       </svg>
       {children !== undefined && (

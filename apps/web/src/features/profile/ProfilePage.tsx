@@ -95,7 +95,7 @@ export function ProfilePage() {
         </div>
       </section>
 
-      <section className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+      <section className="stagger grid grid-cols-2 gap-3 sm:grid-cols-4">
         {stats.map((stat) => (
           <div key={stat.label} className="rounded-xl border border-line bg-surface p-4">
             <p className="text-sm text-muted">{stat.label}</p>
@@ -106,7 +106,7 @@ export function ProfilePage() {
 
       <section className="space-y-3">
         <h2 className="text-xl font-bold">{t('profile.stages')}</h2>
-        <ul className="space-y-2">
+        <ul className="stagger space-y-2">
           {stages.map((stage) => {
             const lessons = lessonsOfStage(stage.id)
             const finished = lessons.filter((l) => done.has(l.slug)).length

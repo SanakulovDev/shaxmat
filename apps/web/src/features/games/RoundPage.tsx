@@ -106,7 +106,7 @@ export function RoundPage() {
       {found.length === 0 ? (
         <p className="text-muted">{t('games.noGames')}</p>
       ) : (
-        <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <ul className="stagger grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {found.slice(0, limit).map((game) => (
             <li key={game.id}>
               <GameCard roundId={round.id} game={game} fetchedAt={dataUpdatedAt} />

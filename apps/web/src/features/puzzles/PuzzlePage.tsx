@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router'
 import { ApiError } from '../../api/client'
 import { Board } from '../../chess/Board'
+import { Confetti } from '../../components/Confetti'
 import {
   type AttemptResult,
   fetchNextPuzzle,
@@ -53,7 +54,10 @@ export function PuzzlePage() {
             {t('puzzles.rating')}:{' '}
             <span className="font-semibold">{rating.rating}</span>{' '}
             <span
-              className={rating.change >= 0 ? 'text-green-700' : 'text-red-700'}
+              key={rating.rating}
+              className={`inline-block animate-pop-in ${
+                rating.change >= 0 ? 'text-green-700' : 'text-red-700'
+              }`}
             >
               ({rating.change >= 0 ? '+' : ''}
               {rating.change})
@@ -134,23 +138,46 @@ function PuzzleSolver({
 
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_18rem]">
-      <div className="mx-auto w-full max-w-[min(100%,calc(100dvh-16rem),36rem)]">
+      <div className="relative mx-auto w-full max-w-[min(100%,calc(100dvh-16rem),36rem)] animate-pop-in">
         <Board
           fen={solver.fen}
           orientation={solver.solverColor === 'w' ? 'white' : 'black'}
           movableColor={solver.status === 'playing' ? solver.solverColor : null}
           onMove={solver.playerMove}
           lastMove={solver.lastMove}
+          flash={solver.flash}
         />
+        {solver.status === 'solved' && <Confetti />}
       </div>
 
       <aside className="space-y-4">
-        <div className="rounded-xl border border-line bg-surface p-4">
+        <div
+          className={`rounded-xl border p-4 transition-colors duration-300 ${
+            solver.status === 'solved'
+              ? 'border-green-300 bg-green-50'
+              : solver.status === 'wrong'
+                ? 'border-red-200 bg-red-50'
+                : 'border-line bg-surface'
+          }`}
+        >
+          {/* The live region stays; each new status inside it slides in, and
+              a wrong move shakes it. */}
           <p className="font-semibold" aria-live="polite">
-            {statusText(t, solver.status, solver.solverColor)}
+            <span
+              key={solver.status}
+              className={`inline-block ${
+                solver.status === 'wrong'
+                  ? 'animate-shake text-red-800'
+                  : solver.status === 'solved'
+                    ? 'animate-pop-in text-green-900'
+                    : 'animate-pop-in'
+              }`}
+            >
+              {statusText(t, solver.status, solver.solverColor)}
+            </span>
           </p>
           {finished && (
-            <p className="mt-2 text-sm text-muted">
+            <p className="mt-2 animate-pop-in text-sm text-muted">
               {t('puzzles.puzzleRating', { rating: puzzle.rating })}
               {puzzle.themes
                 .filter((theme) =>
@@ -166,7 +193,7 @@ function PuzzleSolver({
             <button
               type="button"
               onClick={onNext}
-              className="rounded-lg bg-accent px-4 py-2 font-semibold text-ink"
+              className="animate-pop-in rounded-lg bg-accent px-4 py-2 font-semibold text-ink shadow-[0_8px_20px_-8px_rgb(224_165_38/0.8)] hover:brightness-105"
             >
               {t('puzzles.next')}
             </button>

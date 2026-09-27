@@ -24,20 +24,25 @@ export function BotLobbyPage() {
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">{t('bot.chooseOpponent')}</h1>
 
-      <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+      <ul className="stagger grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
         {BOT_LEVELS.map((bot) => (
           <li key={bot.level}>
             <button
               type="button"
               onClick={() => setLevel(bot.level)}
               aria-pressed={level === bot.level}
-              className={`w-full rounded-xl border-2 bg-surface p-4 text-left motion-safe:transition ${
+              className={`group w-full rounded-xl border-2 bg-surface p-4 text-left motion-safe:transition ${
                 level === bot.level
-                  ? 'border-board-dark shadow-md'
-                  : 'border-line hover:border-line'
+                  ? '-translate-y-1 border-board-dark shadow-lg'
+                  : 'border-line hover:-translate-y-0.5 hover:border-board-dark/30 hover:shadow-md'
               }`}
             >
-              <span className="text-4xl" aria-hidden>
+              <span
+                className={`inline-block text-4xl transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-110 ${
+                  level === bot.level ? 'scale-110' : ''
+                }`}
+                aria-hidden
+              >
                 {BOT_AVATARS[bot.level]}
               </span>
               <span className="mt-2 block font-semibold">
@@ -77,7 +82,7 @@ export function BotLobbyPage() {
         <button
           type="button"
           onClick={start}
-          className="rounded-lg bg-accent px-6 py-2.5 font-semibold text-ink hover:opacity-90"
+          className="rounded-lg bg-accent px-6 py-2.5 font-semibold text-ink shadow-[0_8px_20px_-8px_rgb(224_165_38/0.8)] hover:-translate-y-0.5 hover:brightness-105 motion-safe:transition"
         >
           {t('bot.play')}
         </button>

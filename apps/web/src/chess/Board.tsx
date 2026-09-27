@@ -16,6 +16,10 @@ import { findTypedMove, moveFacts, namesPromotionPiece } from './moveText'
 
 export type BoardMove = { from: string; to: string; promotion?: string }
 
+// Lights a square green or red after a right or wrong move. A new id
+// plays the flash again, even on the same square.
+export type BoardFlash = { kind: 'good' | 'bad'; square: string; id: number }
+
 type BoardProps = {
   fen: string
   orientation: 'white' | 'black'
@@ -29,6 +33,7 @@ type BoardProps = {
   readOnly?: boolean
   // Shown right under the board, above the typed-move field (a player bar).
   footer?: ReactNode
+  flash?: BoardFlash | null
 }
 
 const PROMOTION_PIECES = ['q', 'r', 'b', 'n'] as const
@@ -37,7 +42,10 @@ const PROMOTION_SYMBOLS = {
   b: { q: '♛', r: '♜', b: '♝', n: '♞' },
 }
 
-const LAST_MOVE_STYLE = { backgroundColor: 'rgba(224, 165, 38, 0.45)' }
+const LAST_MOVE_STYLE = {
+  backgroundColor: 'rgba(224, 165, 38, 0.45)',
+  animation: 'square-in 250ms ease-out',
+}
 const SELECTED_STYLE = { backgroundColor: 'rgba(224, 165, 38, 0.65)' }
 const TARGET_STYLE = {
   backgroundImage:
@@ -50,6 +58,49 @@ const CAPTURE_STYLE = {
 const CHECK_STYLE = {
   backgroundImage:
     'radial-gradient(circle, rgba(220,38,38,0.85) 25%, transparent 75%)',
+  animation: 'check-pulse 900ms ease-in-out 2',
+}
+// Mate pulses a little longer.
+const MATE_STYLE = { ...CHECK_STYLE, animation: 'check-pulse 900ms ease-in-out 4' }
+
+// Sparks thrown out from a capture, one every 60 degrees.
+const SPARKS = [0, 60, 120, 180, 240, 300].map((degrees) => {
+  const angle = (degrees * Math.PI) / 180
+  return {
+    '--dx': `${(Math.cos(angle) * 1.6).toFixed(2)}rem`,
+    '--dy': `${(Math.sin(angle) * 1.6).toFixed(2)}rem`,
+  } as CSSProperties
+})
+
+// The box of a square on the board, for effects drawn over it.
+function squareBox(square: string, orientation: 'white' | 'black'): CSSProperties {
+  const file = square.charCodeAt(0) - 97
+  const rank = Number(square[1]) - 1
+  const column = orientation === 'white' ? file : 7 - file
+  const row = orientation === 'white' ? 7 - rank : rank
+  return {
+    left: `${column * 12.5}%`,
+    top: `${row * 12.5}%`,
+    width: '12.5%',
+    height: '12.5%',
+  }
+}
+
+// The square where `lastMove` took a piece, if the step from `before` to
+// `after` is that one move. A jump across several moves, or a move taken
+// back, shows no capture.
+function takenSquare(
+  before: Chess,
+  after: Chess,
+  lastMove: { from: string; to: string } | null | undefined,
+): string | null {
+  if (!lastMove) return null
+  const mover = before.get(lastMove.from as Square)
+  const taken = before.get(lastMove.to as Square)
+  const landed = after.get(lastMove.to as Square)
+  if (!mover || !taken || !landed) return null
+  if (taken.color === mover.color || landed.color !== mover.color) return null
+  return after.get(lastMove.from as Square) ? null : lastMove.to
 }
 
 // Combines two square styles. Background images are stacked with the
@@ -82,6 +133,7 @@ export function Board({
   squareStyles,
   readOnly = false,
   footer,
+  flash,
 }: BoardProps) {
   const { t } = useTranslation()
   const reducedMotion = useReducedMotion()
@@ -94,6 +146,22 @@ export function Board({
     from: string
     to: string
   } | null>(null)
+
+  // Each new position checks whether its move took a piece; a capture gets
+  // a burst over its square. The id restarts the burst on every capture.
+  const [seen, setSeen] = useState({
+    fen,
+    chess,
+    capture: null as { square: string; id: number } | null,
+  })
+  if (seen.fen !== fen) {
+    const square = takenSquare(seen.chess, chess, lastMove)
+    setSeen({
+      fen,
+      chess,
+      capture: square ? { square, id: (seen.capture?.id ?? 0) + 1 } : null,
+    })
+  }
 
   // A selection belongs to the position it was made in.
   const selectedSquare = selected?.fen === fen ? selected.square : null
@@ -137,7 +205,7 @@ export function Board({
   }
   if (chess.inCheck()) {
     const king = chess.findPiece({ type: 'k', color: chess.turn() }).at(0)
-    if (king) styles[king] = CHECK_STYLE
+    if (king) styles[king] = chess.isCheckmate() ? MATE_STYLE : CHECK_STYLE
   }
   if (selectedSquare) styles[selectedSquare] = SELECTED_STYLE
   for (const move of targets) {
@@ -190,6 +258,42 @@ export function Board({
             onSquareClick: ({ square }) => onSquareClick(square),
           }}
         />
+        {seen.capture && (
+          <span
+            key={`capture-${seen.capture.id}`}
+            aria-hidden
+            className="pointer-events-none absolute"
+            style={squareBox(seen.capture.square, orientation)}
+          >
+            <span className="absolute inset-[12%] animate-burst rounded-full border-[3px] border-accent" />
+            {SPARKS.map((spark, index) => (
+              <span
+                key={index}
+                className="absolute left-1/2 top-1/2 size-1.5 animate-spark rounded-full bg-accent"
+                style={spark}
+              />
+            ))}
+          </span>
+        )}
+        {flash && (
+          <>
+            <span
+              key={`square-${flash.id}`}
+              aria-hidden
+              className={`pointer-events-none absolute ${
+                flash.kind === 'good' ? 'animate-square-good' : 'animate-square-bad'
+              }`}
+              style={squareBox(flash.square, orientation)}
+            />
+            <span
+              key={`ring-${flash.id}`}
+              aria-hidden
+              className={`pointer-events-none absolute inset-0 rounded-lg ${
+                flash.kind === 'good' ? 'animate-ring-good' : 'animate-ring-bad'
+              }`}
+            />
+          </>
+        )}
         {promotion && (
           <PromotionDialog
             color={turn}

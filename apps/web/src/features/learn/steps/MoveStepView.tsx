@@ -1,7 +1,7 @@
 import { Chess } from 'chess.js'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Board, type BoardMove } from '../../../chess/Board'
+import { Board, type BoardFlash, type BoardMove } from '../../../chess/Board'
 import { narrateIfAutoplay } from '../narration'
 import { playTone } from '../sounds'
 import { Feedback, StepLayout } from './shared'
@@ -31,6 +31,7 @@ export function MoveStepView({ step, onComplete }: StepProps<'move'>) {
   const [state, setState] = useState<'playing' | 'wrong' | 'done'>('playing')
   const [wrongTries, setWrongTries] = useState(0)
   const [showHint, setShowHint] = useState(false)
+  const [flash, setFlash] = useState<BoardFlash | null>(null)
   const timer = useRef<number | undefined>(undefined)
   const learner = chess.turn()
 
@@ -41,8 +42,14 @@ export function MoveStepView({ step, onComplete }: StepProps<'move'>) {
     const played = chess.move(move)
     setFen(chess.fen())
     setLastMove({ from: played.from, to: played.to })
+    const correct = meetsTask(step, chess, played.lan, played.isCapture())
+    setFlash((last) => ({
+      kind: correct ? 'good' : 'bad',
+      square: played.to,
+      id: (last?.id ?? 0) + 1,
+    }))
 
-    if (meetsTask(step, chess, played.lan, played.isCapture())) {
+    if (correct) {
       setState('done')
       playTone('correct')
       if (step.success) narrateIfAutoplay(step.success)
@@ -83,6 +90,7 @@ export function MoveStepView({ step, onComplete }: StepProps<'move'>) {
           onMove={onMove}
           lastMove={lastMove}
           arrows={arrows}
+          flash={flash}
         />
       }
     >

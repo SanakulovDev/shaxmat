@@ -1,7 +1,16 @@
+import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link, NavLink, Outlet, useMatch } from 'react-router'
+import {
+  Link,
+  NavLink,
+  Outlet,
+  useLocation,
+  useMatch,
+  useNavigation,
+} from 'react-router'
 import { useAuth } from '../auth/store'
 import { IncomingChallenges } from '../features/play/IncomingChallenges'
+import { enterPage } from '../lib/motion'
 import { RealtimeBridge } from '../realtime/socket'
 import { LanguageSwitcher } from './LanguageSwitcher'
 
@@ -22,10 +31,29 @@ export function Layout() {
   const quiet = isHome
     ? 'text-board-light/75 hover:bg-white/10 hover:text-white'
     : 'text-muted hover:bg-paper'
+  const { pathname } = useLocation()
+  // A page's code loads on its first visit; a bar shows it is coming.
+  const loading = useNavigation().state === 'loading'
+  const main = useRef<HTMLElement>(null)
+  const shownPath = useRef(pathname)
+
+  // Each new page slides in. The first one does not: the home hero has
+  // its own entrance.
+  useEffect(() => {
+    if (shownPath.current === pathname) return
+    shownPath.current = pathname
+    enterPage(main.current)
+  }, [pathname])
 
   return (
     <div className="flex min-h-screen flex-col">
       <RealtimeBridge />
+      {loading && (
+        <div
+          aria-hidden
+          className="fixed left-0 top-0 z-50 h-0.5 animate-loading-bar bg-accent shadow-[0_0_8px_var(--color-accent)]"
+        />
+      )}
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-surface focus:px-4 focus:py-2 focus:font-medium focus:shadow"
@@ -53,7 +81,7 @@ export function Layout() {
                 key={to}
                 to={to}
                 className={({ isActive }) =>
-                  `whitespace-nowrap rounded-md px-3 py-1.5 font-medium ${
+                  `whitespace-nowrap rounded-md px-3 py-1.5 font-medium transition-colors duration-200 ${
                     isActive ? (isHome ? 'bg-white/10 text-white' : 'bg-paper text-ink') : quiet
                   }`
                 }
@@ -67,7 +95,7 @@ export function Layout() {
             {user && (
               <Link
                 to="/profile"
-                className={`rounded-md px-3 py-1.5 font-medium ${isHome ? 'hover:bg-white/10' : 'hover:bg-paper'}`}
+                className={`rounded-md px-3 py-1.5 font-medium transition-colors ${isHome ? 'hover:bg-white/10' : 'hover:bg-paper'}`}
               >
                 {user.isGuest ? t('nav.guest') : user.name}
               </Link>
@@ -84,13 +112,13 @@ export function Layout() {
               <>
                 <Link
                   to="/login"
-                  className={`rounded-md px-3 py-1.5 ${quiet}`}
+                  className={`rounded-md px-3 py-1.5 transition-colors ${quiet}`}
                 >
                   {t('nav.login')}
                 </Link>
                 <Link
                   to="/register"
-                  className={`rounded-md px-3 py-1.5 font-medium hover:opacity-90 ${
+                  className={`rounded-md px-3 py-1.5 font-medium transition hover:opacity-90 ${
                     isHome ? 'bg-accent text-ink' : 'bg-board-dark text-white'
                   }`}
                 >
@@ -114,6 +142,7 @@ export function Layout() {
         </p>
       )}
       <main
+        ref={main}
         id="main"
         tabIndex={-1}
         className={`flex-1 outline-none ${isHome ? '' : 'mx-auto w-full max-w-6xl px-4 py-8'}`}

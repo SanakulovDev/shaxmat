@@ -31,6 +31,18 @@
   --animate-float: float 7s ease-in-out infinite;
   --animate-twinkle: twinkle 5s ease-in-out infinite;
   --animate-glow: glow 7s ease-in-out infinite;
+  /* Quick feedback: 200–450 ms, so it reads without slowing anyone down. */
+  --animate-card-in: card-in 420ms cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+  --animate-pop-in: pop-in 320ms cubic-bezier(0.2, 0.9, 0.3, 1.3) backwards;
+  --animate-shake: shake 420ms ease-in-out;
+  --animate-square-good: square-good 650ms ease-out forwards;
+  --animate-square-bad: square-bad 650ms ease-out forwards;
+  --animate-ring-good: ring-good 700ms ease-out forwards;
+  --animate-ring-bad: ring-bad 600ms ease-out forwards;
+  --animate-burst: burst 450ms ease-out forwards;
+  --animate-spark: spark 500ms ease-out forwards;
+  --animate-confetti: confetti 1500ms cubic-bezier(0.15, 0.6, 0.35, 1) both;
+  --animate-loading-bar: loading-bar 1.6s cubic-bezier(0.1, 0.7, 0.3, 1) forwards;
 
   @keyframes drop {
     from {
@@ -93,6 +105,134 @@
       transform: scale(1.08);
     }
   }
+  @keyframes card-in {
+    from {
+      opacity: 0;
+      transform: translateY(0.75rem) scale(0.98);
+    }
+  }
+  @keyframes pop-in {
+    from {
+      opacity: 0;
+      transform: scale(0.94);
+    }
+  }
+  @keyframes shake {
+    20% {
+      transform: translateX(-6px);
+    }
+    40% {
+      transform: translateX(5px);
+    }
+    60% {
+      transform: translateX(-3px);
+    }
+    80% {
+      transform: translateX(2px);
+    }
+  }
+  /* A square lit green or red for a right or wrong move, then fading. */
+  @keyframes square-good {
+    from {
+      background-color: rgb(22 163 74 / 0.55);
+    }
+    to {
+      background-color: rgb(22 163 74 / 0);
+    }
+  }
+  @keyframes square-bad {
+    from {
+      background-color: rgb(220 38 38 / 0.55);
+    }
+    to {
+      background-color: rgb(220 38 38 / 0);
+    }
+  }
+  /* A glow spreading out from the board's edge. */
+  @keyframes ring-good {
+    from {
+      box-shadow: 0 0 0 0 rgb(22 163 74 / 0.75);
+    }
+    to {
+      box-shadow: 0 0 0 16px rgb(22 163 74 / 0);
+    }
+  }
+  @keyframes ring-bad {
+    from {
+      box-shadow: 0 0 0 0 rgb(220 38 38 / 0.75);
+    }
+    to {
+      box-shadow: 0 0 0 12px rgb(220 38 38 / 0);
+    }
+  }
+  /* A ring and sparks where a piece was taken. */
+  @keyframes burst {
+    from {
+      opacity: 0.9;
+      transform: scale(0.3);
+    }
+    to {
+      opacity: 0;
+      transform: scale(1.35);
+    }
+  }
+  @keyframes spark {
+    from {
+      opacity: 1;
+      transform: translate(-50%, -50%);
+    }
+    to {
+      opacity: 0;
+      transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0.4);
+    }
+  }
+  /* Confetti thrown out from the centre, then falling. */
+  @keyframes confetti {
+    0% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(0.3) rotate(0deg);
+    }
+    55% {
+      opacity: 1;
+      transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1)
+        rotate(calc(var(--r) * 0.6));
+    }
+    100% {
+      opacity: 0;
+      transform: translate(calc(-50% + var(--dx) * 1.15), calc(-50% + var(--dy) + 6rem)) scale(1)
+        rotate(var(--r));
+    }
+  }
+  /* A progress bar filling up from the left. */
+  @keyframes grow {
+    from {
+      transform: scaleX(0);
+    }
+  }
+  @keyframes loading-bar {
+    from {
+      width: 0;
+    }
+    to {
+      width: 85%;
+    }
+  }
+  /* The king in check pulses red. */
+  @keyframes check-pulse {
+    0%,
+    100% {
+      box-shadow: inset 0 0 0 0 rgb(220 38 38 / 0);
+    }
+    50% {
+      box-shadow: inset 0 0 0.9em 0.3em rgb(220 38 38 / 0.8);
+    }
+  }
+  /* A move's squares light up instead of switching on. */
+  @keyframes square-in {
+    from {
+      background-color: transparent;
+    }
+  }
 }
 
 @layer base {
@@ -104,6 +244,49 @@
   h2,
   h3 {
     @apply font-display tracking-tight;
+  }
+
+  /* Buttons ease their colours and give a little when pressed. Utilities
+     with their own transition or scale still win. */
+  button {
+    transition-property: color, background-color, border-color, box-shadow, opacity, scale;
+    transition-duration: 150ms;
+    transition-timing-function: ease-out;
+  }
+
+  button:not(:disabled):active {
+    scale: 0.97;
+  }
+}
+
+@layer components {
+  /* A list whose items rise in one after another when it first shows. */
+  .stagger > * {
+    animation: var(--animate-card-in);
+  }
+  .stagger > :nth-child(2) {
+    animation-delay: 40ms;
+  }
+  .stagger > :nth-child(3) {
+    animation-delay: 80ms;
+  }
+  .stagger > :nth-child(4) {
+    animation-delay: 120ms;
+  }
+  .stagger > :nth-child(5) {
+    animation-delay: 160ms;
+  }
+  .stagger > :nth-child(6) {
+    animation-delay: 200ms;
+  }
+  .stagger > :nth-child(7) {
+    animation-delay: 240ms;
+  }
+  .stagger > :nth-child(8) {
+    animation-delay: 280ms;
+  }
+  .stagger > :nth-child(n + 9) {
+    animation-delay: 320ms;
   }
 }
 

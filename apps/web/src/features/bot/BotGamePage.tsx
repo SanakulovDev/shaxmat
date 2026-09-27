@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, Navigate, useSearchParams } from 'react-router'
 import { Board } from '../../chess/Board'
+import { Confetti } from '../../components/Confetti'
 import { MoveList } from '../../chess/MoveList'
 import type { GameResult } from '@shaxmat/chess-core'
 import { BOT_AVATARS } from './avatars'
@@ -48,6 +49,7 @@ function BotGame({
   const game = useBotGame(level, playerColor)
   const { botLevel, result, thinking } = game
   const playerToMove = !result && game.chess.turn() === playerColor
+  const won = result?.winner === playerColor
   const queryClient = useQueryClient()
   const saved = useRef(false)
 
@@ -75,11 +77,12 @@ function BotGame({
 
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_18rem]">
-      <div className="mx-auto w-full max-w-[min(100%,calc(100dvh-13rem),36rem)]">
+      <div className="relative mx-auto w-full max-w-[min(100%,calc(100dvh-13rem),36rem)] animate-pop-in">
         <PlayerBar
           avatar={BOT_AVATARS[level] ?? ''}
           name={t(`bot.levels.${level}.name`)}
           detail={thinking ? t('bot.thinking') : `~${botLevel.elo}`}
+          active={thinking}
         />
         <Board
           fen={game.fen}
@@ -89,18 +92,25 @@ function BotGame({
           lastMove={game.lastMove}
           arrows={hintArrows}
         />
-        <PlayerBar avatar="🙂" name={t('bot.you')} />
+        <PlayerBar avatar="🙂" name={t('bot.you')} active={playerToMove} />
+        {won && <Confetti />}
       </div>
 
       <aside className="space-y-4">
-        <div className="rounded-xl border border-line bg-surface p-4">
+        <div
+          className={`rounded-xl border p-4 transition-colors duration-300 ${
+            won ? 'border-green-300 bg-green-50' : 'border-line bg-surface'
+          }`}
+        >
           <p className="font-semibold" aria-live="polite">
-            {result
-              ? resultText(t, result, playerColor)
-              : statusText(t, playerToMove)}
+            <span key={result ? 'result' : String(playerToMove)} className="inline-block animate-pop-in">
+              {result
+                ? resultText(t, result, playerColor)
+                : statusText(t, playerToMove)}
+            </span>
           </p>
           {result && (
-            <div className="mt-3 flex gap-2">
+            <div className="mt-3 flex animate-pop-in gap-2 [animation-delay:150ms]">
               <button
                 type="button"
                 onClick={onRestart}
@@ -160,14 +170,20 @@ function PlayerBar({
   avatar,
   name,
   detail,
+  active = false,
 }: {
   avatar: string
   name: string
   detail?: string
+  // The side to move: its avatar bobs gently.
+  active?: boolean
 }) {
   return (
     <div className="flex items-center gap-3 py-2">
-      <span className="text-2xl" aria-hidden>
+      <span
+        className={`inline-block text-2xl ${active ? 'animate-float [animation-duration:1.6s]' : ''}`}
+        aria-hidden
+      >
         {avatar}
       </span>
       <span className="font-semibold">{name}</span>

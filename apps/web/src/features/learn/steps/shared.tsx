@@ -28,10 +28,11 @@ export function Feedback({
   kind: 'success' | 'error' | 'info'
   children: ReactNode
 }) {
+  // A wrong answer shakes; the others pop in.
   const styles = {
-    success: 'border-green-200 bg-green-50 text-green-900',
-    error: 'border-red-200 bg-red-50 text-red-900',
-    info: 'border-sky-200 bg-sky-50 text-sky-900',
+    success: 'animate-pop-in border-green-200 bg-green-50 text-green-900',
+    error: 'animate-shake border-red-200 bg-red-50 text-red-900',
+    info: 'animate-pop-in border-sky-200 bg-sky-50 text-sky-900',
   }
   return (
     <p role="status" className={`rounded-lg border px-4 py-3 text-base ${styles[kind]}`}>
