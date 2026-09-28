@@ -14,3 +14,4 @@ apps/api/src/generated/
 
 # Vercel CLI project link
 .vercel
+neon.md
