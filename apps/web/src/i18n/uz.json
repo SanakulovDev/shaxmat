@@ -296,7 +296,13 @@
       "promotion": "Piyodani aylantirish",
       "endgame": "Endshpil",
       "middlegame": "O'rta o'yin",
-      "opening": "Debyut"
+      "opening": "Debyut",
+      "smotheredMate": "Bo'g'ilgan mat",
+      "zugzwang": "Sugsvang",
+      "rookEndgame": "Ruh endshpili",
+      "pawnEndgame": "Piyoda endshpili",
+      "quietMove": "Sokin yurish",
+      "advancedPawn": "Oldinga o'tgan piyoda"
     }
   },
   "learn": {

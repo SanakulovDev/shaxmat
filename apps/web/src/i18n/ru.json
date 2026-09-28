@@ -311,7 +311,13 @@
       "promotion": "Превращение пешки",
       "endgame": "Эндшпиль",
       "middlegame": "Миттельшпиль",
-      "opening": "Дебют"
+      "opening": "Дебют",
+      "smotheredMate": "Спёртый мат",
+      "zugzwang": "Цугцванг",
+      "rookEndgame": "Ладейный эндшпиль",
+      "pawnEndgame": "Пешечный эндшпиль",
+      "quietMove": "Тихий ход",
+      "advancedPawn": "Продвинутая пешка"
     }
   },
   "learn": {

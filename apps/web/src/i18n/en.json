@@ -301,7 +301,13 @@
       "promotion": "Promotion",
       "endgame": "Endgame",
       "middlegame": "Middlegame",
-      "opening": "Opening"
+      "opening": "Opening",
+      "smotheredMate": "Smothered mate",
+      "zugzwang": "Zugzwang",
+      "rookEndgame": "Rook endgame",
+      "pawnEndgame": "Pawn endgame",
+      "quietMove": "Quiet move",
+      "advancedPawn": "Advanced pawn"
     }
   },
   "learn": {

@@ -9,9 +9,14 @@ describe("lessons", () => {
     expect(validateLessons(LESSONS)).toEqual([]);
   });
 
-  it("cover stages 0 and 1", () => {
+  it("cover every stage", () => {
     const stages = new Set(LESSONS.map((lesson) => lesson.stage));
-    expect([...stages]).toEqual([0, 1]);
+    expect([...stages]).toEqual(STAGES.map((stage) => stage.id));
+  });
+
+  it("have unique slugs", () => {
+    const slugs = LESSONS.map((lesson) => lesson.slug);
+    expect(new Set(slugs).size).toBe(slugs.length);
   });
 });
 
